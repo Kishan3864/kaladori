@@ -10,6 +10,7 @@ APP_DIR="${APP_DIR:-/var/www/kaladori}"
 PORT="${PORT:-3100}"
 REPO="${REPO:-https://github.com/Kishan3864/kaladori.git}"
 EMAIL="${EMAIL:-}"   # optional, for Let's Encrypt notices
+SKIP_NGINX="${SKIP_NGINX:-0}" # 1 = only build + PM2 (run Nginx/SSL steps as root separately)
 
 say() { printf '\n\033[1;35m▸ %s\033[0m\n' "$*"; }
 die() { printf '\n\033[1;31m✗ %s\033[0m\n' "$*"; exit 1; }
@@ -30,7 +31,7 @@ fi
 # Who owns :80? We only add a vhost if it's the host's Nginx.
 HOST_NGINX=0
 if command -v nginx >/dev/null && systemctl is-active --quiet nginx; then HOST_NGINX=1; fi
-if [ "$HOST_NGINX" = 0 ] && sudo ss -ltnp 'sport = :80' | grep -q LISTEN; then
+if [ "$HOST_NGINX" = 0 ] && [ "$SKIP_NGINX" != 1 ] && sudo ss -ltnp 'sport = :80' | grep -q LISTEN; then
   echo "Port 80 is held by something other than host Nginx:"
   sudo ss -ltnp 'sport = :80'
   echo "The app will still be started on 127.0.0.1:$PORT; route $DOMAIN to it from that proxy."
@@ -71,7 +72,7 @@ done
 echo "App is up on 127.0.0.1:$PORT"
 
 # ---------- 5. Nginx vhost (only this domain) ----------
-if [ "$HOST_NGINX" = 1 ]; then
+if [ "$HOST_NGINX" = 1 ] && [ "$SKIP_NGINX" != 1 ]; then
   SITE="/etc/nginx/sites-available/$DOMAIN"
   if [ ! -f "$SITE" ]; then
     say "Adding Nginx site for $DOMAIN"
