@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   KalaDori Textile — design tokens
+   ink #1A1A1A · maroon #A2284E · ivory #F6F1EA · sand #E9DFD3 · blush #DE7B9C
+------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #2b2725;
+  --color-maroon: #a2284e;
+  --color-maroon-deep: #841f3f;
+  --color-ivory: #f6f1ea;
+  --color-sand: #e9dfd3;
+  --color-sand-deep: #dccfbf;
+  --color-blush: #de7b9c;
+  --color-stone: #6b625b;
+  --color-line: rgb(26 26 26 / 0.12);
+  --color-line-light: rgb(246 241 234 / 0.16);
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-silk: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 38s) linear infinite;
+  --animate-page-in: page-fade 0.8s var(--ease-editorial) backwards;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* Opacity only — a transform would trap position:fixed descendants. */
+  @keyframes page-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Fonts come from next/font CSS variables set on <html>. */
+@theme inline {
+  --font-display: var(--font-bodoni), "Bodoni 72", "Didot", Georgia, serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Decorative thread SVGs may bleed past the edge; clip (not hidden) keeps sticky working. */
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-maroon);
+    color: var(--color-ivory);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 1.5px solid var(--color-maroon);
+    outline-offset: 3px;
+  }
+
+  /* Maroon is only 2.4:1 on ink. Dark surfaces get a blush ring (6.2:1),
+     maroon panels an ivory one. Element-level focus utilities still win. */
+  .bg-ink :focus-visible {
+    outline-color: var(--color-blush);
+  }
+
+  .bg-maroon :focus-visible {
+    outline-color: var(--color-ivory);
+  }
+
+  /* Height of the sticky header while it is showing; 0 when it slides away
+     (Header sets data-header on <html>). Used by sticky bars beneath it. */
+  :root {
+    --header-offset: 4rem;
+    @media (width >= 48rem) {
+      --header-offset: 4.75rem;
+    }
+  }
+
+  :root[data-header="hidden"] {
+    --header-offset: 0px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Editorial utilities
+------------------------------------------------------------------- */
+
+/* Small uppercase label with wide tracking */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+/* Horizontal page gutter — mobile-first */
+@utility shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1600px;
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Fluid display type scale (Bodoni Moda) */
+@utility text-hero {
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 11vw, 10.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+@utility text-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+@utility text-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 3.6vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+@utility text-lede {
+  font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* Underline link that draws from left on hover */
+@utility link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease-editorial);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+/* Primary pill-less button: solid ink, maroon on hover */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding-inline: 2rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.45s var(--ease-editorial),
+    color 0.45s var(--ease-editorial),
+    border-color 0.45s var(--ease-editorial);
+}
+
+@utility btn-ink {
+  background-color: var(--color-ink);
+  color: var(--color-ivory);
+  border: 1px solid var(--color-ink);
+  &:hover {
+    background-color: var(--color-maroon);
+    border-color: var(--color-maroon);
+  }
+}
+
+@utility btn-outline {
+  background-color: transparent;
+  color: currentColor;
+  border: 1px solid currentColor;
+  &:hover {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-ivory);
+  }
+}
+
+@utility btn-light {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ivory);
+  &:hover {
+    background-color: var(--color-maroon);
+    border-color: var(--color-maroon);
+    color: var(--color-ivory);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Marquees paused by a <MarqueeToggle> in the same group. */
+[data-marquee-paused] .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Respect reduced motion everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
