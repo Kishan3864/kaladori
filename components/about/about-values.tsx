@@ -54,7 +54,7 @@ export function AboutValues() {
                   <span className="eyebrow text-maroon" aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-6 text-[1.75rem] leading-[1.05] md:mt-10 md:text-[2rem]">{value.title}</h3>
+                  <h3 className="mt-6 text-[1.5rem] leading-[1.1] md:mt-8 md:text-[1.75rem]">{value.title}</h3>
                   <p className="mt-4 max-w-[34ch] text-[15px] leading-relaxed text-ink/75">{value.body}</p>
                 </StaggerItem>
               </li>

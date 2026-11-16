@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useId, useState } from "react";
+import Link from "next/link";
+import { useEffect, useId, useState } from "react";
 import type { FaqItem } from "@/components/contact/faq-data";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * Accessible disclosure list: each question is a button (aria-expanded /
  * aria-controls) inside a heading. Answers stay in the DOM so they are
  * crawlable; collapsed panels are `inert` and animate to height 0.
+ * Each item has a stable `#faq-<id>` anchor; arriving on (or navigating to)
+ * that hash opens the matching answer.
  */
 export function FaqAccordion({ items }: { items: FaqItem[] }) {
   const uid = useId();
@@ -25,6 +28,23 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
     });
   }
 
+  // Open the question named in the URL hash (e.g. /contact#faq-payment). Reads
+  // window.location inside an effect, so no URL hooks or Suspense are needed.
+  useEffect(() => {
+    const ids = new Set(items.map((item) => item.id));
+    const openFromHash = () => {
+      const id = window.location.hash.replace(/^#faq-/, "");
+      if (!id || !ids.has(id)) return;
+      setOpen((current) => (current.has(id) ? current : new Set(current).add(id)));
+    };
+    const frame = requestAnimationFrame(openFromHash);
+    window.addEventListener("hashchange", openFromHash);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", openFromHash);
+    };
+  }, [items]);
+
   return (
     <div className="border-t border-ink/15">
       {items.map((item, index) => {
@@ -33,7 +53,7 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
         const panelId = `${uid}-faq-${item.id}-panel`;
 
         return (
-          <div key={item.id} className="border-b border-ink/15">
+          <div key={item.id} id={`faq-${item.id}`} className="scroll-mt-28 border-b border-ink/15">
             <h3 className="font-sans text-base font-normal tracking-normal">
               <button
                 type="button"
@@ -78,6 +98,34 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
                 {item.answer.map((paragraph) => (
                   <p key={paragraph.slice(0, 24)}>{paragraph}</p>
                 ))}
+                {item.links?.length ? (
+                  <p className="flex flex-wrap gap-x-6">
+                    {item.links.map((link) =>
+                      link.href.startsWith("/") ? (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="eyebrow inline-flex min-h-[44px] items-center gap-2 text-[10px] text-maroon hover:text-ink"
+                        >
+                          <span className="link-draw">{link.label}</span>
+                          <span aria-hidden="true">&rarr;</span>
+                        </Link>
+                      ) : (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="eyebrow inline-flex min-h-[44px] items-center gap-2 text-[10px] text-maroon hover:text-ink"
+                        >
+                          <span className="link-draw">{link.label}</span>
+                          <span aria-hidden="true">&#8599;</span>
+                          <span className="sr-only">(opens in a new tab)</span>
+                        </a>
+                      ),
+                    )}
+                  </p>
+                ) : null}
               </div>
             </motion.div>
           </div>

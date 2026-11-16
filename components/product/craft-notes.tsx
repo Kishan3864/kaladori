@@ -95,7 +95,7 @@ export function CraftNotes({ product }: { product: Product }) {
               src={image}
               alt={`${product.name} — fabric detail`}
               fill
-              sizes="(min-width: 1024px) 30vw, (min-width: 768px) 40vw, 80vw"
+              sizes="(min-width: 1600px) 500px, (min-width: 1024px) 31vw, (min-width: 768px) 40vw, (min-width: 640px) 64vw, 82vw"
               className="object-cover"
             />
           </ImageReveal>
@@ -103,7 +103,10 @@ export function CraftNotes({ product }: { product: Product }) {
         </div>
 
         <div className="col-span-12 md:col-span-6 md:col-start-7 md:pt-16 lg:col-span-5 lg:col-start-7 lg:pt-28">
-          <p className="eyebrow text-maroon">{craft.eyebrow}</p>
+          <p className="eyebrow flex items-center gap-4 text-maroon">
+            <span aria-hidden="true" className="h-px w-10 bg-maroon" />
+            {craft.eyebrow}
+          </p>
           <MaskedLines as="h2" lines={craft.lines} className="text-display mt-6" />
 
           <Stagger className="mt-12 border-t border-ink/15 md:mt-16" stagger={0.12}>

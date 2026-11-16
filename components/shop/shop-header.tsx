@@ -7,18 +7,18 @@ import { pad } from "./shop-params";
 export function ShopHeader() {
   return (
     <section className="relative">
-      <div className="shell relative pb-32 pt-10 md:pb-48 md:pt-16">
+      <div className="shell relative pb-28 pt-8 md:pb-40 md:pt-14">
         <Reveal y={12} className="flex items-center justify-between gap-6 border-b border-line pb-4">
           <p className="eyebrow text-maroon">The collection</p>
-          <p className="eyebrow hidden text-stone sm:block">Sarees · Kurtis · Pants</p>
+          <p className="eyebrow hidden text-stone sm:block">Sarees · Kurtis · Pants — Handwoven in India</p>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-12 gap-x-4 md:mt-20 md:gap-x-8">
+        <div className="mt-10 grid grid-cols-12 gap-x-4 md:mt-16 md:gap-x-8">
           <MaskedLines
             as="h1"
             animateOnMount
             delay={0.15}
-            className="col-span-12 text-[clamp(2.75rem,10vw,9.5rem)] leading-[0.9] tracking-[-0.035em] lg:col-span-11"
+            className="col-span-12 text-hero lg:col-span-7"
             lines={[
               "Kept close,",
               <>
@@ -29,7 +29,7 @@ export function ShopHeader() {
 
           <Reveal
             delay={0.55}
-            className="col-span-12 mt-10 sm:col-span-10 md:col-span-6 md:col-start-7 md:mt-16 lg:col-span-4 lg:col-start-8"
+            className="col-span-12 mt-10 sm:col-span-10 md:col-span-6 md:col-start-7 md:mt-14 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:self-end"
           >
             <p className="text-lede text-ink/80">
               Handloom sarees, hand-finished kurtis and the trousers that hold them together — made in

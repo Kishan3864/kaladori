@@ -35,10 +35,10 @@ const slots = [
     sizes: "(min-width: 768px) 32vw, 78vw",
   },
   {
-    // Wide-leg trousers with a tailored jacket in a stone colonnade.
+    // A rose printed kurta and matching trousers on a stone staircase.
     image: editorial.lookbook[2],
-    slug: "wide-leg-linen-trouser",
-    note: "The colonnade",
+    slug: "gulabi-silk-a-line-kurti",
+    note: "Rose, head to toe",
     className: "w-[86%] md:w-auto md:col-span-4 md:col-start-2",
     frame: "aspect-[3/4]",
     sizes: "(min-width: 768px) 32vw, 86vw",
@@ -62,10 +62,10 @@ const slots = [
     sizes: "(min-width: 768px) 40vw, 82vw",
   },
   {
-    // Wide-leg trousers seen from behind, beside a vintage van.
+    // Ivory high-waisted trousers, black top, tangerine coat, glass facade.
     image: editorial.lookbook[5],
-    slug: "pleated-silk-palazzo",
-    note: "On the road",
+    slug: "everyday-straight-pant",
+    note: "City ivory",
     className: "md:col-span-4 md:col-start-8 md:mt-52",
     frame: "aspect-[3/4]",
     sizes: "(min-width: 768px) 32vw, 100vw",

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
+import { submitContact } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -26,8 +27,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ORDER_PATTERN = /^[A-Za-z0-9-]{4,20}$/;
 const MESSAGE_MIN = 20;
 const MESSAGE_MAX = 2000;
-/** Simulated network delay for the sample confirmation. */
-const SEND_DELAY_MS = 1400;
 
 function validate(values: Values): Errors {
   const errors: Errors = {};
@@ -91,8 +90,8 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 
 /**
  * Contact form with inline validation and a sample confirmation.
- * There is no backend yet: submitting simulates a short send and then shows
- * the thank-you panel. Nothing is transmitted anywhere.
+ * Submitting saves the message on the server (see app/actions.ts →
+ * lib/server/contacts.ts); it then appears in the admin panel at /admin.
  */
 export function ContactForm() {
   const uid = useId();
@@ -164,8 +163,14 @@ export function ContactForm() {
 
     setAnnouncement("Sending your message.");
     setStatus("sending");
-    // Sample only: no backend is connected, so we simulate a short send.
-    await new Promise((resolve) => setTimeout(resolve, SEND_DELAY_MS));
+    const honeypot = (event.currentTarget.elements.namedItem("website") as HTMLInputElement | null)?.value ?? "";
+    const result = await submitContact({ ...values, website: honeypot });
+    if (!result.ok) {
+      setStatus("idle");
+      setAnnouncement(result.error);
+      setErrors((current) => ({ ...current, message: result.error }));
+      return;
+    }
     setFirstName(values.name.trim().split(/\s+/)[0] ?? "");
     setAnnouncement("");
     setStatus("sent");
@@ -203,6 +208,13 @@ export function ContactForm() {
           >
             <fieldset disabled={sending} className="min-w-0 space-y-10 md:space-y-12">
               <legend className="sr-only">Your message</legend>
+              {/* Honeypot: hidden from people, tempting to bots. */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label>
+                  Website
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+                </label>
+              </div>
 
               <div className="grid gap-10 sm:grid-cols-2 sm:gap-x-8">
                 <div>
@@ -367,7 +379,7 @@ export function ContactForm() {
                       className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-blush"
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
-                      transition={{ duration: SEND_DELAY_MS / 1000, ease: [0.65, 0, 0.35, 1] }}
+                      transition={{ duration: 1.4, ease: [0.65, 0, 0.35, 1] }}
                     />
                   </>
                 ) : (

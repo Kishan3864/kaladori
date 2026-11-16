@@ -20,7 +20,7 @@ export function RelatedProducts({ products, category, categoryName }: RelatedPro
   if (products.length === 0) return null;
 
   return (
-    <section aria-labelledby="related-heading" className="relative pb-24 pt-28 md:pb-36 md:pt-44">
+    <section aria-labelledby="related-heading" className="relative pb-16 pt-28 md:pb-24 md:pt-40">
       {/* The thread runs out of the craft band and loops into the heading. */}
       <ThreadLine
         preset="loop"
@@ -32,7 +32,10 @@ export function RelatedProducts({ products, category, categoryName }: RelatedPro
       <div className="shell">
         <div className="grid grid-cols-12 items-end gap-x-4 gap-y-8 md:gap-x-8">
           <div className="col-span-12 md:col-span-7">
-            <p className="eyebrow text-maroon">More from the edit</p>
+            <p className="eyebrow flex items-center gap-4 text-maroon">
+              <span aria-hidden="true" className="h-px w-10 bg-maroon" />
+              More from the edit
+            </p>
             <MaskedLines
               id="related-heading"
               as="h2"
@@ -71,7 +74,7 @@ export function RelatedProducts({ products, category, categoryName }: RelatedPro
         >
           {products.map((product, i) => (
             <StaggerItem key={product.slug} className={cn(i % 2 === 1 && "mt-10 lg:mt-24")}>
-              <ProductCard product={product} sizes="(min-width: 1024px) 24vw, 50vw" />
+              <ProductCard product={product} sizes="(min-width: 1600px) 370px, (min-width: 1024px) 23vw, 48vw" />
             </StaggerItem>
           ))}
         </Stagger>

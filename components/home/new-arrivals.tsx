@@ -50,7 +50,7 @@ export function NewArrivals() {
 
         <Stagger
           stagger={0.12}
-          amount={0.1}
+          amount={0.05}
           className="mt-14 grid grid-cols-2 gap-x-4 gap-y-14 md:mt-20 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8"
         >
           {arrivals.map((product, i) => (

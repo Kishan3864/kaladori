@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SectionEyebrow } from "@/components/home/section-eyebrow";
 import { MaskedLines } from "@/components/motion/reveal";
 import { usePrefersReducedMotion } from "@/lib/hooks";
@@ -57,10 +57,13 @@ export function Testimonials() {
   const [hovering, setHovering] = useState(false);
   const [focusWithin, setFocusWithin] = useState(false);
   const reduceMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  // Only rotate while the section is on (or near) the screen.
+  const onScreen = useInView(sectionRef, { margin: "160px 0px 160px 0px" });
 
   // No auto-advance under reduced motion; otherwise pause on hover, focus or request.
   const autoplay = !reduceMotion && !userPaused;
-  const running = autoplay && !hovering && !focusWithin;
+  const running = autoplay && onScreen && !hovering && !focusWithin;
 
   const go = useCallback(
     (step: 1 | -1) => {
@@ -80,9 +83,10 @@ export function Testimonials() {
 
   return (
     <section
+      ref={sectionRef}
       aria-roledescription="carousel"
       aria-label="Client testimonials"
-      className="py-24 md:py-36"
+      className="pb-16 pt-24 md:pb-24 md:pt-36"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
       onFocus={() => setFocusWithin(true)}
@@ -178,11 +182,11 @@ function QuoteBody({ testimonial }: { testimonial: (typeof testimonials)[number]
       <blockquote className="relative">
         <span
           aria-hidden="true"
-          className="absolute -top-2 left-0 font-display text-[4.5rem] leading-none text-maroon md:-left-14 md:-top-4 md:text-[6rem]"
+          className="absolute -top-1 left-0 font-display text-[3.5rem] leading-none text-maroon md:-left-12 md:-top-3 md:text-[4.5rem]"
         >
           “
         </span>
-        <p className="pt-12 font-display text-[1.75rem] leading-[1.18] tracking-[-0.015em] md:pt-0 md:text-[2.5rem] md:leading-[1.12] xl:text-[3.1rem]">
+        <p className="pt-10 font-display text-[1.375rem] leading-[1.25] tracking-[-0.01em] sm:text-[1.5rem] md:pt-0 md:text-[1.875rem] md:leading-[1.2] xl:text-[2.25rem]">
           {testimonial.quote}
         </p>
       </blockquote>

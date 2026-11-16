@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BrandPromises } from "@/components/home/brand-promises";
 import { BrandStory } from "@/components/home/brand-story";
 import { CategoryMarquee } from "@/components/home/category-marquee";
 import { CategoryTiles } from "@/components/home/category-tiles";
@@ -77,6 +78,7 @@ export default function HomePage() {
       <BrandStory />
       <Lookbook />
       <Testimonials />
+      <BrandPromises className="pb-20 md:pb-28" />
       <Newsletter />
     </>
   );

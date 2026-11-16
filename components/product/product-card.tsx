@@ -7,7 +7,10 @@ type ProductCardProps = {
   product: Product;
   /** `sizes` hint for next/image — match the grid the card sits in. */
   sizes?: string;
-  /** Load eagerly (first row above the fold). */
+  /**
+   * First row above the fold: load eagerly. Deliberately not preloaded —
+   * only a page's single hero / LCP image gets a preload.
+   */
   priority?: boolean;
   className?: string;
   /** Taller editorial crop for feature slots. */
@@ -37,9 +40,10 @@ export function ProductCard({
           alt={`${product.name} in ${product.colour}`}
           fill
           sizes={sizes}
-          preload={priority}
+          loading={priority ? "eager" : undefined}
           className="object-cover transition-transform duration-[1600ms] ease-editorial group-hover:scale-[1.07]"
         />
+        {/* Hover view: display:none on touch screens, so the lazy image is never downloaded there. */}
         {secondary ? (
           <Image
             src={secondary}
@@ -47,17 +51,17 @@ export function ProductCard({
             aria-hidden="true"
             fill
             sizes={sizes}
-            className="object-cover opacity-0 transition-[opacity,transform] duration-[1200ms] ease-editorial group-hover:scale-[1.04] group-hover:opacity-100"
+            className="hidden object-cover opacity-0 transition-[opacity,transform] duration-[1200ms] ease-editorial group-hover:scale-[1.04] group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block"
           />
         ) : null}
 
         {tag ? (
-          <span className="eyebrow absolute left-3 top-3 bg-ivory/90 px-2.5 py-1.5 text-[10px] text-ink backdrop-blur-sm sm:text-[11px]">
+          <span className="eyebrow absolute left-2.5 top-2.5 bg-ivory/95 px-2 py-1.5 text-[9px] text-ink sm:left-3 sm:top-3 sm:px-2.5 sm:text-[10px]">
             {tag}
           </span>
         ) : null}
 
-        <span className="pointer-events-none absolute inset-x-3 bottom-3 hidden translate-y-3 items-center justify-between bg-ivory/95 px-4 py-3 opacity-0 transition-all duration-500 ease-editorial group-hover:translate-y-0 group-hover:opacity-100 md:flex">
+        <span className="pointer-events-none absolute inset-x-3 bottom-3 hidden translate-y-3 items-center justify-between bg-ivory/95 px-4 py-3 opacity-0 transition-[opacity,transform] duration-500 ease-editorial group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 [@media(hover:hover)]:md:flex">
           <span className="eyebrow text-[10px]">Discover</span>
           <span className="text-[11px] text-stone">{product.sizes.length > 1 ? `${product.sizes[0]}–${product.sizes[product.sizes.length - 1]}` : product.sizes[0]}</span>
         </span>

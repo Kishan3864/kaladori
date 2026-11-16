@@ -63,7 +63,7 @@ export function CategoryTiles() {
   const [sarees, kurtis, pants] = categories;
 
   return (
-    <section className="relative pb-24 pt-32 md:pb-36 md:pt-48">
+    <section className="relative pb-24 pt-32 md:pb-36 md:pt-44">
       <div className="shell">
         <div className="grid gap-8 md:grid-cols-12 md:gap-x-6 lg:gap-x-8">
           <div className="md:col-span-7">
@@ -94,7 +94,7 @@ export function CategoryTiles() {
               feature
               className="col-span-2 md:col-span-7"
               frameClassName="aspect-[4/5]"
-              sizes="(min-width: 768px) 56vw, 100vw"
+              sizes="(min-width: 1600px) 880px, (min-width: 768px) 56vw, 100vw"
             />
           ) : null}
 
@@ -105,7 +105,7 @@ export function CategoryTiles() {
                 index={1}
                 className="md:mt-28"
                 frameClassName="aspect-[3/4]"
-                sizes="(min-width: 768px) 30vw, 46vw"
+                sizes="(min-width: 1600px) 460px, (min-width: 768px) 30vw, 46vw"
                 delay={0.1}
               />
             ) : null}
@@ -115,7 +115,7 @@ export function CategoryTiles() {
                 index={2}
                 className="mt-16 md:mt-0 md:-translate-x-[24%]"
                 frameClassName="aspect-[3/4]"
-                sizes="(min-width: 768px) 30vw, 46vw"
+                sizes="(min-width: 1600px) 460px, (min-width: 768px) 30vw, 46vw"
                 delay={0.2}
               />
             ) : null}

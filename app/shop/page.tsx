@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { BrandPromises } from "@/components/home/brand-promises";
 import { CatalogueView } from "@/components/shop/catalogue-view";
 import { ShopCatalogue } from "@/components/shop/shop-catalogue";
 import { ShopHeader } from "@/components/shop/shop-header";
@@ -74,6 +75,8 @@ export default function ShopPage() {
       <Suspense fallback={<CatalogueView category={null} sort={DEFAULT_SORT} isFallback />}>
         <ShopCatalogue />
       </Suspense>
+
+      <BrandPromises className="pb-20 md:pb-28" />
     </>
   );
 }

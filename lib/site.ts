@@ -1,5 +1,5 @@
 /** Canonical origin without a trailing slash (an empty env value falls back to the default). */
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://kaladori.com").replace(/\/+$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://kaladori.empireevent.org").replace(/\/+$/, "");
 
 export const site = {
   name: "KalaDori Textile",
@@ -9,8 +9,19 @@ export const site = {
   description:
     "KalaDori Textile is a modern Indian label of handwoven sarees, kurtis and tailored pants — heirloom craft, made with restraint for the way you live now.",
   email: "hello@kaladori.com",
-  /** Studio phone, e.g. "+91 98765 43210". Leave empty to hide the "Call" row on /contact. */
-  phone: "" as string,
+  /** Founder & proprietor. */
+  owner: "Komal Patel",
+  /** Company phone (also the WhatsApp ordering line). */
+  phone: "+91 92650 08264" as string,
+  /** WhatsApp number in international format, digits only (for wa.me links). */
+  whatsapp: "919265008264",
+  /** Order / payment hours shown next to WhatsApp CTAs. */
+  hours: "Monday–Saturday, 10am–7pm IST",
+  country: "India",
+  /** Registered business address — fill in before launch; UI hides it while empty. */
+  address: "" as string,
+  /** City / state shown publicly. */
+  city: "Gujarat, India",
   instagram: "https://instagram.com/",
   /** Free-shipping threshold in INR, used by the cart drawer. */
   freeShippingThreshold: 4999,
@@ -19,7 +30,7 @@ export const site = {
 } as const;
 
 /**
- * Client-care policy (sample copy). The single source for the product page,
+ * Client-care policy. The single source for the product page,
  * the bag, the FAQ and structured data, so they never disagree.
  */
 export const policies = {

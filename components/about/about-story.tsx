@@ -63,14 +63,14 @@ export function AboutStory() {
             <ParallaxImage
               src={editorial.about.src}
               alt={editorial.about.alt}
-              sizes="(min-width: 1600px) 1150px, (min-width: 1024px) 72vw, 100vw"
-              className="aspect-[4/5] sm:aspect-[3/2] lg:aspect-[16/10]"
+              sizes="(min-width: 1600px) 1110px, (min-width: 1024px) 70vw, 100vw"
+              className="aspect-[4/5] max-h-[78svh] w-full sm:aspect-[3/2] lg:aspect-[16/10] lg:max-h-none"
             />
             <figcaption className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
               <span className="eyebrow text-maroon">Plate I — On the loom</span>
               <span className="max-w-md text-[13px] leading-relaxed text-stone sm:text-right">
                 A single Banarasi can carry more than five thousand warp threads, each one set on the loom by
-                hand.
+                hand — and every one of them is woven in India.
               </span>
             </figcaption>
           </figure>
@@ -113,7 +113,7 @@ export function AboutStory() {
             <ul className="grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-1">
               {figures.map((figure) => (
                 <li key={figure.unit} className="border-t border-line py-5">
-                  <span className="font-display text-5xl leading-none">{figure.value}</span>{" "}
+                  <span className="font-display text-[2.5rem] leading-none md:text-5xl">{figure.value}</span>{" "}
                   <span className="eyebrow ml-2 text-maroon">{figure.unit}</span>{" "}
                   <span className="mt-3 block text-[13px] leading-relaxed text-stone">{figure.label}</span>
                 </li>
@@ -169,12 +169,12 @@ export function AboutStory() {
             <ol className="mt-14 md:mt-20">
               {steps.map((step, index) => (
                 <li key={step.number} className={index % 2 === 1 ? "md:ml-[14%]" : undefined}>
-                  <Reveal amount={0.35} className="grid grid-cols-[3.25rem_1fr] gap-x-4 border-t border-line py-10 md:grid-cols-[5rem_1fr] md:gap-x-6 md:py-14">
-                    <span className="font-display text-4xl leading-none text-maroon md:text-5xl" aria-hidden="true">
+                  <Reveal amount={0.2} className="grid grid-cols-[3.25rem_1fr] gap-x-4 border-t border-line py-10 md:grid-cols-[5rem_1fr] md:gap-x-6 md:py-14">
+                    <span className="font-display text-3xl leading-none text-maroon md:text-4xl" aria-hidden="true">
                       {step.number}
                     </span>
                     <div>
-                      <h3 className="text-[1.75rem] leading-[1.05] md:text-[2.25rem]">
+                      <h3 className="text-[1.5rem] leading-[1.1] md:text-[1.875rem]">
                         {step.title}
                       </h3>
                       <p className="mt-4 max-w-prose text-[15px] leading-relaxed text-stone md:text-base">{step.body}</p>

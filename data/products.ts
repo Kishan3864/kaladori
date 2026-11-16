@@ -237,7 +237,7 @@ export const products: Product[] = [
     images: [
       unsplash("photo-1764740185240-58527413f572", 1400),
       unsplash("photo-1766994063823-ed214f883548", 1400),
-      unsplash("photo-1760287364219-160c234ded00", 1400),
+      unsplash("photo-1783762774159-b0c266382e2f", 1400),
     ],
   },
   {
@@ -367,7 +367,7 @@ export const products: Product[] = [
     care: COTTON_CARE,
     sizes: APPAREL_SIZES,
     images: [
-      unsplash("photo-1777915423816-0a7ca479342e", 1400),
+      unsplash("photo-1673180608353-63292b332e84", 1400),
       unsplash("photo-1632282005753-29f80ed13c93", 1400),
       unsplash("photo-1789110854083-e4752bded644", 1400),
     ],
@@ -393,9 +393,9 @@ export const products: Product[] = [
     care: COTTON_CARE,
     sizes: APPAREL_SIZES,
     images: [
-      unsplash("photo-1604136172384-b2e9c43271ec", 1400),
       unsplash("photo-1789110519554-bdca2e4549e5", 1400),
-      unsplash("photo-1762331224129-783a3ea1fc3f", 1400),
+      unsplash("photo-1732588958740-3f70bc2dcd13", 1400),
+      unsplash("photo-1604136172384-b2e9c43271ec", 1400),
     ],
   },
 ];

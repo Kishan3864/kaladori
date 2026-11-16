@@ -29,12 +29,12 @@ export function BrandStory() {
               src={editorial.story.src}
               alt={editorial.story.alt}
               fill
-              sizes="(min-width: 768px) 48vw, 88vw"
+              sizes="(min-width: 1600px) 760px, (min-width: 768px) 46vw, 88vw"
               className="object-cover"
             />
           </ImageReveal>
           <p className="eyebrow mt-4 max-w-[48%] text-[10px] leading-[1.6] text-stone md:max-w-none">
-            Fig. 01 — A pit loom, Varanasi
+            Fig. 01 — Dyed warp on the loom
           </p>
 
           <div className="absolute -bottom-12 right-0 z-10 w-[46%] bg-sand p-2 md:-bottom-16 md:-right-[14%] md:w-[42%] lg:p-2.5">
@@ -43,7 +43,7 @@ export function BrandStory() {
                 src={editorial.storySecondary.src}
                 alt={editorial.storySecondary.alt}
                 fill
-                sizes="(min-width: 768px) 20vw, 44vw"
+                sizes="(min-width: 1600px) 320px, (min-width: 768px) 20vw, 42vw"
                 className="object-cover"
               />
             </ImageReveal>
@@ -54,7 +54,7 @@ export function BrandStory() {
         <div className="relative z-10 md:col-span-5 md:col-start-8 md:self-center md:pt-10">
           <SectionEyebrow index="03" label="The house" />
           <MaskedLines
-            className="mt-7 font-display text-[2.5rem] leading-[1] tracking-[-0.025em] md:text-[3.25rem] xl:text-[4.25rem]"
+            className="mt-7 text-display"
             lines={[
               "Slow cloth, ",
               <>
@@ -81,7 +81,7 @@ export function BrandStory() {
                 key={figure.label}
                 className={i === 0 ? "py-6 pr-3" : "border-l border-line py-6 pl-4 pr-2 md:pl-6"}
               >
-                <p className="font-display text-[2.25rem] leading-none tracking-[-0.02em] md:text-[2.75rem]">
+                <p className="font-display text-[1.875rem] leading-none tracking-[-0.02em] md:text-[2.25rem]">
                   {figure.value}
                 </p>
                 <p className="eyebrow mt-3 text-[10px] leading-[1.5] text-stone">{figure.label}</p>

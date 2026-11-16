@@ -55,7 +55,7 @@ export function FilterBar({ category, sort, resultCount, onChange }: FilterBarPr
   }
 
   return (
-    <div className="border-y border-line bg-ivory/92 backdrop-blur-md md:sticky md:top-(--header-offset) md:z-30 md:transition-[top] md:duration-500 md:ease-editorial">
+    <div className="border-y border-line bg-ivory md:sticky md:top-(--header-offset) md:z-30 md:transition-[top] md:duration-500 md:ease-editorial">
       <div className="shell flex flex-col md:min-h-16 md:flex-row md:items-center md:justify-between md:gap-10">
         <nav aria-label="Filter by category" className="min-w-0">
           <motion.ul

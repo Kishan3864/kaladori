@@ -128,7 +128,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section id="faq" aria-label="Frequently asked questions" className="relative scroll-mt-20 bg-sand">
+      <section id="faq" aria-label="Frequently asked questions" className="relative scroll-mt-28 bg-sand">
         {/* The thread stitches the ivory and sand panels together as you scroll. */}
         <ThreadLine
           preset="loop"

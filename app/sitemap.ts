@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { LAST_UPDATED, policyPages } from "@/components/legal/policy-data";
 import { products } from "@/data/products";
 import { site } from "@/lib/site";
 
@@ -23,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/shop`, lastModified: LAST_MODIFIED, changeFrequency: "daily", priority: 0.9 },
     { url: `${base}/about`, lastModified: LAST_MODIFIED, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/contact`, lastModified: LAST_MODIFIED, changeFrequency: "yearly", priority: 0.4 },
+    ...policyPages.map((page) => ({
+      url: `${base}${page.href}`,
+      lastModified: LAST_UPDATED.iso,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
   ];
 
   const productPages: MetadataRoute.Sitemap = products.map((product) => ({

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getCategory, getProduct, getRelatedProducts, products } from "@/data/products";
 import { site } from "@/lib/site";
+import { BrandPromises } from "@/components/home/brand-promises";
 import { Breadcrumbs } from "@/components/product/breadcrumbs";
 import { CraftNotes } from "@/components/product/craft-notes";
 import { ProductGallery } from "@/components/product/product-gallery";
@@ -115,6 +116,8 @@ async function ProductDetail({ params }: { params: ProductPageProps["params"] })
       <CraftNotes product={product} />
 
       <RelatedProducts products={related} category={product.category} categoryName={categoryName} />
+
+      <BrandPromises className="pb-20 md:pb-28" />
 
       {/* Marks the end of page content: the mobile buy bar hides once this is reached. */}
       <div data-pdp-end="" aria-hidden="true" />

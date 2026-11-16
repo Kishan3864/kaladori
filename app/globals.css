@@ -108,9 +108,9 @@
   /* Height of the sticky header while it is showing; 0 when it slides away
      (Header sets data-header on <html>). Used by sticky bars beneath it. */
   :root {
-    --header-offset: 4rem;
+    --header-offset: 4.25rem;
     @media (width >= 48rem) {
-      --header-offset: 4.75rem;
+      --header-offset: 5.5rem;
     }
   }
 
@@ -151,26 +151,29 @@
   }
 }
 
-/* Fluid display type scale (Bodoni Moda) */
+/* Fluid display type scale (Bodoni Moda).
+   Sized so the longest single word in any headline stays well inside a
+   360px viewport, and no headline dominates a laptop screen:
+   hero 42px → ~100px (1440) → 108px cap, display 32px → 64px, title 26px → 36px. */
 @utility text-hero {
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 11vw, 10.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-}
-
-@utility text-display {
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  font-size: clamp(2.625rem, 7vw, 6.75rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
 }
 
+@utility text-display {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.2rem + 3.2vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
 @utility text-title {
   font-family: var(--font-display);
-  font-size: clamp(1.875rem, 3.6vw, 3.25rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.625rem, 1.1rem + 1.6vw, 2.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
 }
 
 @utility text-lede {
@@ -249,6 +252,35 @@
   }
 }
 
+/* Image curtain played on mount (<ImageReveal animateOnMount>). Pure CSS, so
+   above-the-fold photographs uncover as soon as the HTML paints, with or
+   without JavaScript. --curtain-from is set per direction inline. */
+@keyframes curtain-open {
+  from {
+    clip-path: var(--curtain-from, inset(100% 0% 0% 0%));
+  }
+  to {
+    clip-path: inset(0% 0% 0% 0%);
+  }
+}
+
+@keyframes curtain-settle {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@utility curtain-open {
+  animation: curtain-open 1.25s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+@utility curtain-settle {
+  animation: curtain-settle 1.6s var(--ease-editorial) both;
+}
+
 /* Marquees paused by a <MarqueeToggle> in the same group. */
 [data-marquee-paused] .animate-marquee {
   animation-play-state: paused;
@@ -263,5 +295,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* No waiting behind a delayed curtain either. */
+  .curtain-open,
+  .curtain-settle {
+    animation-delay: 0s !important;
   }
 }

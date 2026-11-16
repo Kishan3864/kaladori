@@ -3,6 +3,7 @@ import { Bodoni_Moda, Jost } from "next/font/google";
 import { CartDrawer } from "@/components/layout/cart-drawer";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { Providers } from "@/components/providers";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -90,6 +91,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <Footer />
+          <WhatsAppButton />
           <CartDrawer />
         </Providers>
       </body>

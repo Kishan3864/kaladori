@@ -28,12 +28,12 @@ export function GridInterlude({ animated = true }: { animated?: boolean }) {
 
   return (
     <div className="grid md:grid-cols-3 md:gap-x-8">
-      <figure className="flex flex-col justify-between bg-sand px-6 py-12 sm:px-10 sm:py-14 md:col-span-2 md:px-14 md:py-16 xl:px-20 xl:py-20">
+      <figure className="flex flex-col justify-between bg-sand px-6 py-10 sm:px-10 sm:py-14 md:col-span-2 md:px-12 md:py-14 xl:px-16 xl:py-16">
         <p className="eyebrow text-maroon">A note from the studio</p>
 
         <div className="mt-12 md:mt-16">
           <blockquote>
-            <p className="max-w-[18ch] font-display text-[clamp(2rem,3.6vw,3.75rem)] leading-[1.04] tracking-[-0.025em] text-balance">
+            <p className="max-w-[18ch] font-display text-[clamp(1.75rem,1.2rem+1.8vw,2.75rem)] leading-[1.08] tracking-[-0.02em] text-balance">
               Cloth should <em className="italic">outlive</em> the season it was bought in.
             </p>
           </blockquote>
@@ -64,8 +64,17 @@ export function GridInterlude({ animated = true }: { animated?: boolean }) {
             Every piece is made in small runs with the weavers, printers and embroiderers we know by
             name — so it can be worn for years, then handed on.
           </p>
-          <Link href="/about" className="eyebrow link-draw shrink-0 self-start py-3 lg:self-auto">
-            Our story <span aria-hidden="true">→</span>
+          <Link
+            href="/about"
+            className="eyebrow group inline-flex min-h-11 shrink-0 items-center gap-3 self-start lg:self-auto"
+          >
+            <span className="link-draw py-1">Our story</span>
+            <span
+              aria-hidden="true"
+              className="text-maroon transition-transform duration-500 ease-editorial group-hover:translate-x-1"
+            >
+              →
+            </span>
           </Link>
         </figcaption>
       </figure>

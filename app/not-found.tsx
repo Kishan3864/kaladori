@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="relative">
-      <div className="shell pt-16 md:pt-28">
+      <div className="shell pt-14 md:pt-24">
         <div className="flex items-center gap-4">
           <p className="eyebrow text-maroon">Error 404</p>
           <span aria-hidden="true" className="h-px w-10 bg-line" />
@@ -47,12 +47,12 @@ export default function NotFound() {
             The page you were looking for has moved, or was never woven at all. The collection, however, is exactly
             where we left it.
           </p>
-          <div className="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-10">
+          <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-10">
             <Link href="/shop" className="btn btn-ink">
               Shop the collection <span aria-hidden="true">→</span>
             </Link>
-            <Link href="/" className="eyebrow link-draw inline-flex min-h-11 items-center">
-              Return home
+            <Link href="/" className="eyebrow inline-flex min-h-11 items-center justify-center sm:justify-start">
+              <span className="link-draw py-1">Return home</span>
             </Link>
           </div>
         </Reveal>
@@ -71,7 +71,7 @@ export default function NotFound() {
                     className="group flex min-h-11 items-baseline gap-5 py-5 md:gap-8 md:py-6"
                   >
                     <span className="eyebrow w-6 shrink-0 text-stone">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="font-display text-3xl leading-none transition-colors duration-500 ease-editorial group-hover:text-maroon md:text-4xl">
+                    <span className="font-display text-[1.75rem] leading-none transition-colors duration-500 ease-editorial group-hover:text-maroon md:text-[2.25rem]">
                       {category.name}
                     </span>
                     <span className="ml-auto hidden text-sm font-light text-stone sm:inline">{category.tagline}</span>

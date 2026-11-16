@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HandwovenMark } from "@/components/home/brand-mark";
 import { ScrollCue } from "@/components/home/scroll-cue";
 import { ImageReveal } from "@/components/motion/image-reveal";
 import { MaskedLines, Reveal } from "@/components/motion/reveal";
@@ -20,7 +21,7 @@ const HERO_THREAD =
 export function Hero() {
   return (
     <section className="relative">
-      <div className="shell grid min-h-[calc(100svh-100px)] grid-cols-1 md:min-h-[calc(100svh-112px)] md:grid-cols-12 md:grid-rows-[auto_1fr_auto] md:gap-x-6 lg:gap-x-8">
+      <div className="shell grid min-h-[calc(100svh-100px)] grid-cols-1 md:min-h-[calc(100svh-120px)] md:grid-cols-12 md:grid-rows-[auto_1fr_auto] md:gap-x-6 lg:gap-x-8">
         {/* Season label */}
         <Reveal
           delay={0.1}
@@ -36,7 +37,7 @@ export function Hero() {
         </Reveal>
 
         {/* Headline */}
-        <div className="relative z-20 pt-10 md:col-[1/7] md:row-[2/3] md:self-end md:pt-16">
+        <div className="relative z-20 pt-9 md:col-[1/7] md:row-[2/3] md:self-end md:pt-16">
           <MaskedLines
             as="h1"
             animateOnMount
@@ -55,7 +56,7 @@ export function Hero() {
         {/* Lede + calls to action */}
         <div className="pb-10 pt-7 md:col-[1/6] md:row-[3/4] md:pb-12 md:pt-12">
           <Reveal delay={0.6} y={18}>
-            <p className="text-lede max-w-[30rem] text-ink/80">
+            <p className="text-lede max-w-[28rem] text-ink/80">
               Handwoven sarees, kurtis and tailored pants from India’s great weaving towns — made slowly, in
               small runs, for a wardrobe you keep.
             </p>
@@ -78,7 +79,8 @@ export function Hero() {
                 </span>
               </Link>
             </div>
-            <div className="mt-14 hidden md:block">
+            <HandwovenMark className="mt-8 md:mt-10" label="Handwoven in India · Small runs" />
+            <div className="mt-10 hidden md:block">
               <ScrollCue />
             </div>
           </Reveal>
@@ -86,14 +88,15 @@ export function Hero() {
 
         {/*
           Campaign imagery. On phones it leads the hero, full-bleed at about
-          two-thirds of the viewport, so the first screen is the photograph.
+          ~60% of the viewport (capped), so the first screen is the photograph
+          with the headline starting just below it.
           From md it moves to the right half and bleeds to the edge.
         */}
         <div className="relative -mx-5 order-first md:order-none md:col-[7/13] md:row-[1/4] md:mx-0 md:-mr-10 xl:-mr-14">
           <ImageReveal
             animateOnMount
             delay={0.2}
-            className="h-[64svh] min-h-[420px] w-full md:h-full md:min-h-[560px]"
+            className="h-[60svh] max-h-[640px] min-h-[360px] w-full md:h-full md:max-h-none md:min-h-[560px]"
           >
             <Image
               src={editorial.hero.src}
@@ -109,7 +112,7 @@ export function Hero() {
           {/* Describes the cloth in the photograph (not a specific product), and leads to the sarees. */}
           <Link
             href="/shop?category=sarees"
-            className="eyebrow group absolute right-4 top-4 z-10 flex min-h-11 items-center gap-3 bg-ivory/90 px-4 text-[10px] backdrop-blur-sm md:right-6 md:top-6 xl:right-8"
+            className="eyebrow group absolute right-4 top-4 z-10 flex min-h-11 items-center gap-3 bg-ivory/95 px-4 text-[10px] transition-colors duration-500 ease-editorial hover:bg-ivory md:right-6 md:top-6 xl:right-8"
           >
             <span className="text-maroon">AW26</span>
             <span className="link-draw py-0.5">Silk &amp; zari sarees</span>

@@ -15,16 +15,16 @@ export function AboutQuote() {
         showTip
       />
 
-      <div className="shell relative pb-48 pt-28 md:pb-64 md:pt-44">
+      <div className="shell relative pb-40 pt-24 md:pb-56 md:pt-36">
         <figure className="grid grid-cols-12 gap-x-5 md:gap-x-8">
           <Reveal y={16} className="col-span-12 lg:col-span-2">
-            <span aria-hidden="true" className="block font-display text-[6rem] leading-[0.6] text-blush md:text-[9rem]">
+            <span aria-hidden="true" className="block font-display text-[4.5rem] leading-[0.6] text-blush md:text-[6.5rem]">
               &ldquo;
             </span>
           </Reveal>
           <blockquote className="col-span-12 mt-8 lg:col-span-9 lg:col-start-3 lg:mt-0">
             <Reveal delay={0.1}>
-              <p className="max-w-[24ch] font-display text-[clamp(2.1rem,5.2vw,5rem)] leading-[1.04] tracking-[-0.025em]">
+              <p className="max-w-[26ch] font-display text-[clamp(1.75rem,1.1rem+2.4vw,3.375rem)] leading-[1.1] tracking-[-0.02em]">
                 The loom does not hurry. It asks you to <em className="italic text-blush">listen</em> — and then it
                 remembers everything.
               </p>

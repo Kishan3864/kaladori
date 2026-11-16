@@ -8,18 +8,18 @@ const glossary = [
 /** Opening statement for /about: oversized Bodoni headline with a glossary of the house name. */
 export function AboutHero() {
   return (
-    <section className="shell pb-20 pt-14 md:pb-28 md:pt-24 lg:pt-32">
+    <section className="shell pb-20 pt-12 md:pb-28 md:pt-20 lg:pt-24">
       <Reveal y={12} className="flex items-center gap-4">
         <span className="h-px w-10 bg-maroon" aria-hidden="true" />
         <p className="eyebrow text-maroon">Our story</p>
       </Reveal>
 
-      <div className="mt-10 grid grid-cols-12 gap-x-5 md:mt-14 md:gap-x-8">
+      <div className="mt-10 grid grid-cols-12 gap-x-5 md:mt-12 md:gap-x-8">
         <MaskedLines
           as="h1"
           animateOnMount
           delay={0.15}
-          className="col-span-12 text-hero lg:col-span-9"
+          className="col-span-12 text-hero lg:col-span-8"
           lines={[
             <span key="l1">The art of</span>,
             <span key="l2" className="inline-block pl-[0.9em] md:pl-[1.8em]">
@@ -34,7 +34,7 @@ export function AboutHero() {
         <Reveal
           delay={0.7}
           y={20}
-          className="col-span-12 mt-14 sm:col-span-8 sm:col-start-5 lg:col-span-3 lg:col-start-10 lg:mt-0 lg:self-end lg:pb-3"
+          className="col-span-12 mt-12 sm:col-span-8 sm:col-start-5 lg:col-span-3 lg:col-start-10 lg:mt-0 lg:self-end lg:pb-3"
         >
           <dl className="space-y-6 border-t border-line pt-6">
             {glossary.map((entry) => (

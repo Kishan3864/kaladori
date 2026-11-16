@@ -3,11 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { bagWhatsappText } from "@/components/checkout/bag-whatsapp";
+import { WhatsAppGlyph } from "@/components/checkout/whatsapp-glyph";
 import { MAX_QUANTITY, selectCount, selectSubtotal, useCart, type CartItem } from "@/lib/cart-store";
 import { useEscapeKey, useFocusTrap, useLockBodyScroll } from "@/lib/hooks";
 import { site } from "@/lib/site";
 import { cn, formatPrice } from "@/lib/utils";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
@@ -18,8 +21,8 @@ export function CartDrawer() {
   useLockBodyScroll(isOpen);
   useEscapeKey(isOpen, closeCart);
 
-  // The panel only mounts while the bag is open, so its local state (the
-  // checkout notice) starts fresh every time the drawer opens.
+  // The panel only mounts while the bag is open, so it always reflects the
+  // current bag when the drawer opens.
   return (
     <AnimatePresence>{isOpen ? <CartPanel key="cart" closeCart={closeCart} /> : null}</AnimatePresence>
   );
@@ -29,7 +32,6 @@ function CartPanel({ closeCart }: { closeCart: () => void }) {
   const items = useCart((s) => s.items);
   const count = useCart(selectCount);
   const subtotal = useCart(selectSubtotal);
-  const [notice, setNotice] = useState(false);
   const panelRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -118,7 +120,7 @@ function CartPanel({ closeCart }: { closeCart: () => void }) {
             </motion.ul>
 
             {/* Summary */}
-            <div className="border-t border-line px-6 pb-8 pt-6 sm:px-8">
+            <div className="border-t border-line px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 sm:px-8 sm:pb-8">
               <div className="flex items-baseline justify-between">
                 <span className="eyebrow">Subtotal</span>
                 <span className="font-display text-2xl">{formatPrice(subtotal)}</span>
@@ -128,22 +130,19 @@ function CartPanel({ closeCart }: { closeCart: () => void }) {
                   ? "Taxes included. Shipping calculated at checkout."
                   : "Taxes included · Complimentary shipping."}
               </p>
-              <button type="button" className="btn btn-ink mt-6 w-full" onClick={() => setNotice(true)}>
+              <Link href="/checkout" onClick={closeCart} className="btn btn-ink mt-6 w-full">
                 Proceed to checkout
-              </button>
-              <AnimatePresence>
-                {notice ? (
-                  <motion.p
-                    role="status"
-                    className="mt-4 text-center text-[13px] text-maroon"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    Checkout is coming soon — this is a preview storefront.
-                  </motion.p>
-                ) : null}
-              </AnimatePresence>
+              </Link>
+              <a
+                href={whatsappLink(bagWhatsappText(items))}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline mt-3 w-full"
+              >
+                <WhatsAppGlyph size={15} />
+                Order on WhatsApp
+              </a>
+              <p className="mt-3 text-center text-[12.5px] text-stone">Pay by UPI · Every order confirmed personally</p>
               <button
                 type="button"
                 onClick={closeCart}

@@ -2,10 +2,12 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
+import { WhatsAppGlyph } from "@/components/checkout/whatsapp-glyph";
 import type { Product } from "@/data/products";
 import { MAX_QUANTITY, useCart } from "@/lib/cart-store";
 import { policies, site } from "@/lib/site";
 import { cn, formatPrice } from "@/lib/utils";
+import { productEnquiryText, whatsappLink } from "@/lib/whatsapp";
 import { Accordion, type AccordionItem } from "./accordion";
 import { SizeGuide } from "./size-guide";
 import { SizeSelector } from "./size-selector";
@@ -114,6 +116,15 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
     };
   }, []);
 
+  // Tell fixed page chrome (the floating WhatsApp button) that the buy bar
+  // is showing, so it can lift clear of it.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (barVisible) root.setAttribute("data-buy-bar", "");
+    else root.removeAttribute("data-buy-bar");
+    return () => root.removeAttribute("data-buy-bar");
+  }, [barVisible]);
+
   const focusSizes = () => {
     const group = groupRef.current;
     if (!group) return;
@@ -185,7 +196,7 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
             Orders leave the atelier within {policies.dispatchDays} working days and arrive in{" "}
             {policies.deliveryMetroDays.join("–")} working days to metro cities and{" "}
             {policies.deliveryElsewhereDays.join("–")} elsewhere in India, packed in recycled card and muslin.
-            Shipping is complimentary on orders over {formatPrice(site.freeShippingThreshold)}; below that, a flat{" "}
+            Shipping is complimentary on orders of {formatPrice(site.freeShippingThreshold)} and above; below that, a flat{" "}
             {formatPrice(policies.flatShipping)} applies.
           </p>
           {finalSale ? (
@@ -248,7 +259,7 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
         >
           {/* Price */}
           <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <p className="text-[19px] tabular-nums">
+            <p className="text-[20px] md:text-[19px] tabular-nums">
               <span className="sr-only">Price: </span>
               {formatPrice(product.price)}
             </p>
@@ -262,12 +273,12 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
               </>
             ) : null}
           </div>
-          <p className="mt-1.5 text-[12px] text-stone">Inclusive of all taxes</p>
+          <p className="mt-1.5 text-[12.5px] md:text-[12px] text-stone">Inclusive of all taxes</p>
 
           {/* Summary + attributes */}
-          <p className="text-lede mt-7 max-w-[34rem] text-ink/85">{product.summary}</p>
+          <p className="text-lede mt-6 md:mt-7 max-w-[34rem] text-ink/85">{product.summary}</p>
 
-          <dl className="mt-7 border-t border-line text-[14px]">
+          <dl className="mt-6 border-t border-line text-[15px] md:mt-7 md:text-[14px]">
             <div className="flex items-center gap-4 border-b border-line py-3.5">
               <dt className="eyebrow w-16 shrink-0 text-stone">Colour</dt>
               <dd className="flex items-center gap-2.5">
@@ -388,17 +399,31 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
             {added && size ? `${product.name}, ${size}, added to your bag.` : ""}
           </p>
 
+          {/* Order on WhatsApp (size included once chosen) */}
+          <a
+            href={whatsappLink(productEnquiryText(product, single ? undefined : (size ?? undefined)))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline mt-3 w-full px-5!"
+          >
+            <WhatsAppGlyph size={16} />
+            Order on WhatsApp
+          </a>
+          <p className="mt-2.5 text-center text-[12.5px] leading-relaxed text-stone">
+            Questions on fit or fabric? We reply on WhatsApp, {site.hours.replace(" IST", "")}.
+          </p>
+
           {/* Reassurance */}
-          <ul className="mt-7 space-y-2.5 text-[13px] text-stone">
+          <ul className="mt-7 space-y-3 text-[13.5px] leading-relaxed text-stone sm:space-y-2.5 sm:text-[13px]">
             {[
-              `Complimentary shipping on orders over ${formatPrice(site.freeShippingThreshold)}`,
+              `Complimentary shipping on orders of ${formatPrice(site.freeShippingThreshold)} and above`,
               finalSale
                 ? "Sale piece — final sale, not eligible for return or exchange"
                 : `Returns and exchanges within ${policies.returnDays} days`,
               "Handcrafted in India — small irregularities are the mark of the hand",
             ].map((line) => (
               <li key={line} className="flex gap-3">
-                <span aria-hidden="true" className="mt-[0.7em] h-px w-4 shrink-0 bg-maroon" />
+                <span aria-hidden="true" className="mt-[0.8em] h-px w-4 shrink-0 bg-maroon" />
                 {line}
               </li>
             ))}
@@ -426,9 +451,9 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
             exit={{ y: "100%" }}
             transition={{ duration: 0.6, ease: EASE }}
           >
-            <div className="shell flex items-center gap-4 py-3">
+            <div className="shell flex items-center gap-3 py-3 sm:gap-4">
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[14px]">{product.name}</p>
+                <p className="truncate text-[14.5px] leading-snug">{product.name}</p>
                 <p className="mt-0.5 text-[12.5px] tabular-nums text-stone">
                   {formatPrice(product.price)}
                   {size ? ` · ${size}` : ""}

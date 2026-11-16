@@ -77,7 +77,7 @@ export function Header() {
       {/* Announcement */}
       <div className="bg-ink text-ivory">
         <p className="shell eyebrow py-2.5 text-center text-[10px] text-ivory/85 sm:text-[11px]">
-          Complimentary shipping across India on orders over ₹{site.freeShippingThreshold.toLocaleString("en-IN")}
+          Complimentary shipping across India on orders of ₹{site.freeShippingThreshold.toLocaleString("en-IN")} and above
         </p>
       </div>
 
@@ -85,13 +85,14 @@ export function Header() {
         className={cn(
           "sticky top-0 z-50 border-b transition-colors duration-500",
           scrolled || menuOpen
-            ? "border-line bg-ivory/92 backdrop-blur-md"
+            ? "border-line bg-ivory/95 backdrop-blur-sm"
             : "border-transparent bg-ivory",
         )}
         animate={{ y: hidden ? "-100%" : "0%" }}
         transition={{ duration: 0.5, ease: EASE }}
       >
-        <div className="shell grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 md:h-[76px]">
+        {/* Tall enough for the full lock-up, so "TEXTILE" under the wordmark stays legible. */}
+        <div className="shell grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 md:h-[88px]">
           {/* Left: menu button (mobile) / primary nav (desktop) */}
           <div className="flex items-center">
             <button
@@ -134,7 +135,7 @@ export function Header() {
           </div>
 
           {/* Centre: logo */}
-          <Logo priority className="w-[112px] md:w-[136px]" onClick={closeMenu} />
+          <Logo priority className="w-[140px] sm:w-[156px] md:w-[196px] xl:w-[212px]" onClick={closeMenu} />
 
           {/* Right: secondary nav + bag */}
           <div className="flex items-center justify-end gap-8">
@@ -194,7 +195,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         <motion.div
           id="mobile-menu"
           key="mobile-menu"
-          className="fixed inset-x-0 bottom-0 top-0 z-[45] flex flex-col overflow-y-auto bg-ivory pt-[104px] lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-0 z-[45] flex flex-col overflow-y-auto bg-ivory pt-[108px] md:pt-[128px] lg:hidden"
           initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
@@ -219,7 +220,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className="flex items-baseline justify-between py-5 font-display text-[2.5rem] leading-none tracking-[-0.02em]"
+                    className="flex min-h-14 items-baseline justify-between py-5 font-display text-[2rem] leading-none tracking-[-0.02em] transition-colors duration-500 ease-editorial hover:text-maroon"
                   >
                     <span>{item.label}</span>
                     <span className="eyebrow text-stone">{String(i + 1).padStart(2, "0")}</span>

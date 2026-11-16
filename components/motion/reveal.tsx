@@ -4,22 +4,30 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Shared in-view trigger. A small amount plus a slightly raised bottom edge:
+ * content starts moving as it enters, and a block taller than the viewport
+ * (long copy on a phone) can still reach the threshold — a large fraction
+ * there would leave it invisible for good.
+ */
+const VIEWPORT_MARGIN = "0px 0px -6% 0px";
+
 type RevealProps = HTMLMotionProps<"div"> & {
   /** Delay in seconds. */
   delay?: number;
   /** Distance to rise from, in px. */
   y?: number;
-  /** Viewport amount (0–1) that must be visible before animating. */
+  /** Viewport amount (0–1) that must be visible before animating. Keep it small. */
   amount?: number;
 };
 
 /** Fades and lifts its children into place once they scroll into view. */
-export function Reveal({ children, delay = 0, y = 28, amount = 0.25, ...rest }: RevealProps) {
+export function Reveal({ children, delay = 0, y = 28, amount = 0.1, ...rest }: RevealProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount }}
+      viewport={{ once: true, amount, margin: VIEWPORT_MARGIN }}
       transition={{ duration: 1, ease: EASE, delay }}
       {...rest}
     >
@@ -35,12 +43,12 @@ type StaggerProps = HTMLMotionProps<"div"> & {
 };
 
 /** Parent that staggers <StaggerItem> children into view. */
-export function Stagger({ children, stagger = 0.09, delay = 0, amount = 0.2, ...rest }: StaggerProps) {
+export function Stagger({ children, stagger = 0.09, delay = 0, amount = 0.05, ...rest }: StaggerProps) {
   return (
     <motion.div
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount }}
+      viewport={{ once: true, amount, margin: VIEWPORT_MARGIN }}
       variants={{
         hidden: {},
         show: { transition: { staggerChildren: stagger, delayChildren: delay } },
@@ -91,7 +99,7 @@ export function MaskedLines({
 }) {
   const trigger = animateOnMount
     ? { animate: "show" as const }
-    : { whileInView: "show" as const, viewport: { once: true, amount: 0.4 } };
+    : { whileInView: "show" as const, viewport: { once: true, amount: 0.2, margin: VIEWPORT_MARGIN } };
 
   return (
     <Tag id={id} className={className}>

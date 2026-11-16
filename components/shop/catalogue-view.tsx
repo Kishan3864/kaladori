@@ -17,8 +17,8 @@ type CatalogueViewProps = ShopState & {
   isFallback?: boolean;
 };
 
-/** Header height while it is showing (h-16 / md:h-[76px]). */
-const HEADER_OFFSET = { base: 64, md: 76 };
+/** Header height while it is showing (h-[68px] / md:h-[88px]). */
+const HEADER_OFFSET = { base: 68, md: 88 };
 
 /**
  * The catalogue: filter + sort bar, category intro and product grid.
@@ -57,7 +57,7 @@ export function CatalogueView({ category, sort, isFallback = false }: CatalogueV
   );
 
   return (
-    <section ref={sectionRef} aria-labelledby="catalogue-heading" className="relative pb-24 md:pb-36">
+    <section ref={sectionRef} aria-labelledby="catalogue-heading" className="relative pb-20 md:pb-28">
       <h2 id="catalogue-heading" className="sr-only">
         {info ? info.name : "All pieces"}
       </h2>
