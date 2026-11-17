@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
-import { getProduct, type Product } from "@/data/products";
+import type { Product } from "@/lib/catalog";
 
 export type CartItem = {
   /** Unique line id: `${slug}__${size}` */
@@ -61,18 +61,19 @@ function safeStorage(): StateStorage {
 }
 
 /**
- * Rebuild persisted lines from the live catalogue: drops unknown products or
- * sizes and malformed entries, refreshes name / price / image, clamps
- * quantities and folds duplicate lines together.
+ * Rebuild persisted lines: drops malformed entries, clamps quantities and
+ * folds duplicate lines together. Name, price and image are the snapshot
+ * taken when the piece was added; checkout re-prices everything on the
+ * server from the live catalogue, so a stale snapshot can never be charged.
  */
 function reviveItems(raw: unknown[]): CartItem[] {
   const lines = new Map<string, CartItem>();
   for (const entry of raw) {
     if (!entry || typeof entry !== "object") continue;
-    const { slug, size, quantity } = entry as Partial<Record<keyof CartItem, unknown>>;
+    const { slug, size, quantity, name, price, image, colour } = entry as Partial<Record<keyof CartItem, unknown>>;
     if (typeof slug !== "string" || typeof size !== "string") continue;
-    const product = getProduct(slug);
-    if (!product || !product.sizes.includes(size)) continue;
+    if (typeof name !== "string" || typeof price !== "number" || !Number.isFinite(price)) continue;
+    if (typeof image !== "string") continue;
     const id = `${slug}__${size}`;
     const count = typeof quantity === "number" && Number.isFinite(quantity) ? Math.floor(quantity) : 1;
     const total = Math.min(MAX_QUANTITY, Math.max(1, count) + (lines.get(id)?.quantity ?? 0));
@@ -80,10 +81,10 @@ function reviveItems(raw: unknown[]): CartItem[] {
       id,
       slug,
       size,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      colour: product.colour,
+      name,
+      price,
+      image,
+      colour: typeof colour === "string" ? colour : "",
       quantity: total,
     });
   }

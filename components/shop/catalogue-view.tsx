@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
 import { useCallback, useMemo, useRef } from "react";
-import { getCategory } from "@/data/products";
+import { getCategory, type Catalog } from "@/lib/catalog";
 import { CategoryIntro } from "./category-intro";
 import { FilterBar } from "./filter-bar";
 import { ProductGrid } from "./product-grid";
-import { DEFAULT_SORT, getShopProducts, type ShopState } from "./shop-params";
+import { categoryOptions, DEFAULT_SORT, getShopProducts, type ShopState } from "./shop-params";
 
 type CatalogueViewProps = ShopState & {
+  catalog: Catalog;
   /**
    * Rendered as the Suspense fallback: server HTML only, never hydrated.
    * Everything renders visible and in place so the markup is complete.
@@ -17,8 +18,8 @@ type CatalogueViewProps = ShopState & {
   isFallback?: boolean;
 };
 
-/** Header height while it is showing (h-[68px] / md:h-[88px]). */
-const HEADER_OFFSET = { base: 68, md: 88 };
+/** Header height while it is showing (h-16 / md:h-[4.5rem]). */
+const HEADER_OFFSET = { base: 64, md: 72 };
 
 /**
  * The catalogue: filter + sort bar, category intro and product grid.
@@ -26,11 +27,12 @@ const HEADER_OFFSET = { base: 68, md: 88 };
  * are written back to the URL with history.replaceState, which Next.js syncs
  * into useSearchParams, so the URL is the only source of truth.
  */
-export function CatalogueView({ category, sort, isFallback = false }: CatalogueViewProps) {
+export function CatalogueView({ catalog, category, sort, isFallback = false }: CatalogueViewProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
-  const items = useMemo(() => getShopProducts(category, sort), [category, sort]);
-  const info = category ? getCategory(category) : undefined;
+  const items = useMemo(() => getShopProducts(catalog.products, category, sort), [catalog, category, sort]);
+  const options = useMemo(() => categoryOptions(catalog), [catalog]);
+  const info = getCategory(catalog, category);
 
   const update = useCallback(
     (next: ShopState) => {
@@ -57,25 +59,18 @@ export function CatalogueView({ category, sort, isFallback = false }: CatalogueV
   );
 
   return (
-    <section ref={sectionRef} aria-labelledby="catalogue-heading" className="relative pb-20 md:pb-28">
+    <section ref={sectionRef} aria-labelledby="catalogue-heading" className="relative pb-16 md:pb-24">
       <h2 id="catalogue-heading" className="sr-only">
         {info ? info.name : "All pieces"}
       </h2>
 
-      <FilterBar category={category} sort={sort} resultCount={items.length} onChange={update} />
+      <FilterBar options={options} category={category} sort={sort} resultCount={items.length} onChange={update} />
 
       <div className="shell">
-        <CategoryIntro category={category} />
+        <CategoryIntro info={info} />
 
         {items.length > 0 ? (
-          <ProductGrid
-            products={items}
-            // A single category (four pieces) reads as one staggered row; "All" keeps three columns.
-            columns={category ? 4 : 3}
-            showInterlude={category === null}
-            animated={!isFallback}
-            className={info ? "pt-12 md:pt-20" : "pt-12 md:pt-24"}
-          />
+          <ProductGrid products={items} animated={!isFallback} className="pt-8 md:pt-10" />
         ) : (
           <EmptyState onReset={() => update({ category: null, sort: DEFAULT_SORT })} />
         )}

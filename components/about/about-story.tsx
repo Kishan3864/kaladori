@@ -63,6 +63,7 @@ export function AboutStory() {
             <ParallaxImage
               src={editorial.about.src}
               alt={editorial.about.alt}
+              priority
               sizes="(min-width: 1600px) 1110px, (min-width: 1024px) 70vw, 100vw"
               className="aspect-[4/5] max-h-[78svh] w-full sm:aspect-[3/2] lg:aspect-[16/10] lg:max-h-none"
             />
@@ -131,6 +132,7 @@ export function AboutStory() {
               <ParallaxImage
                 src={editorial.aboutSecondary.src}
                 alt={editorial.aboutSecondary.alt}
+                priority
                 sizes="(min-width: 1600px) 620px, (min-width: 1024px) 40vw, (min-width: 640px) 62vw, 84vw"
                 className="aspect-[4/5]"
                 from="left"

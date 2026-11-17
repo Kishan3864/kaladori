@@ -5,7 +5,7 @@ export const site = {
   name: "KalaDori Textile",
   shortName: "KalaDori",
   url: siteUrl,
-  tagline: "Handwoven heritage, cut for now.",
+  tagline: "Stitched like art.",
   description:
     "KalaDori Textile is a modern Indian label of handwoven sarees, kurtis and tailored pants — heirloom craft, made with restraint for the way you live now.",
   email: "hello@kaladori.com",
@@ -44,6 +44,23 @@ export const policies = {
   /** Days after delivery to return or exchange full-price pieces. */
   returnDays: 14,
 } as const;
+
+/**
+ * Messages rotating in the announcement bar above the header. Keep them true:
+ * add a real offer here (for example a festive discount) when there is one.
+ */
+export const announcements = [
+  `Free shipping across India over ₹${site.freeShippingThreshold.toLocaleString("en-IN")}`,
+  "The Festive Edit 2026 is here",
+  `Order on WhatsApp, pay by UPI, ${policies.returnDays}-day returns`,
+] as const;
+
+export type NavLink = { label: string; href: string };
+
+/** "Shop all" plus one link per category, in the admin's order. */
+export function shopLinks(categories: { name: string; slug: string }[]): NavLink[] {
+  return [{ label: "Shop all", href: "/shop" }, ...categories.map((c) => ({ label: c.name, href: `/shop?category=${c.slug}` }))];
+}
 
 export const navigation = {
   primary: [

@@ -2,15 +2,11 @@ import Link from "next/link";
 import { WhatsAppGlyph } from "@/components/checkout/whatsapp-glyph";
 import { Logo } from "@/components/layout/logo";
 import { addressText, mailHref, policyPages, telHref, whatsappHref } from "@/components/legal/policy-data";
-import { navigation, site } from "@/lib/site";
+import { navigation, site, type NavLink } from "@/lib/site";
 
-const columns = [
+const houseColumns = [
   {
-    title: "Shop",
-    links: navigation.primary,
-  },
-  {
-    title: "The House",
+    title: "The house",
     links: [
       { label: "Our story", href: "/about" },
       { label: "Craft & makers", href: "/about#craft" },
@@ -26,38 +22,44 @@ const columns = [
       { label: "Fabric care", href: "/contact#faq-care" },
     ],
   },
-  {
-    title: "Policies",
-    links: policyPages,
-  },
+  { title: "Policies", links: policyPages },
 ] as const;
 
-export function Footer() {
+/** Light, quiet footer: brand and order line on the left, four short link columns on the right. */
+export function Footer({ shop = navigation.primary }: { shop?: readonly NavLink[] }) {
+  const columns = [{ title: "Shop", links: shop }, ...houseColumns];
   return (
-    <footer id="site-footer" className="relative overflow-hidden bg-ink text-ivory">
-      <div className="shell pb-10 pt-16 md:pt-28">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+    <footer id="site-footer" className="border-t border-line bg-sand/50">
+      <div className="shell pb-8 pt-16 md:pt-20">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <Logo variant="light" className="w-[230px] sm:w-[270px] md:w-[320px]" />
-            <p className="mt-10 max-w-[20ch] font-display text-3xl leading-[1.1] text-ivory md:text-4xl">
-              Woven slowly. Worn for a lifetime.
+            <Logo layout="horizontal" className="w-[240px]" />
+            <p className="mt-6 max-w-xs text-[15px] leading-relaxed text-stone">
+              Handwoven sarees, kurtis and pants. Order on WhatsApp, pay by UPI.
             </p>
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-ivory/60">{site.description}</p>
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ink min-h-11 px-6">
+                <WhatsAppGlyph size={15} />
+                WhatsApp us
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+              <a href={telHref} className="link-draw text-[15px] tabular-nums">
+                {site.phone}
+              </a>
+            </div>
+            <p className="mt-4 text-[13px] text-stone">{site.hours}</p>
           </div>
 
-          <nav
-            aria-label="Footer"
-            className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4 lg:col-span-8 lg:pl-8 xl:pl-16"
-          >
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-8">
             {columns.map((column) => (
               <div key={column.title}>
-                <h2 className="eyebrow font-sans tracking-[0.26em] text-blush">{column.title}</h2>
-                <ul className="mt-5 space-y-1 md:mt-6">
+                <h2 className="font-sans text-[13px] font-medium tracking-normal text-ink">{column.title}</h2>
+                <ul className="mt-4 space-y-0.5">
                   {column.links.map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="inline-flex min-h-[40px] items-center py-1 text-[15px] leading-snug text-ivory/80 hover:text-ivory sm:min-h-0"
+                        className="inline-flex min-h-10 items-center text-[14px] text-stone transition-colors duration-300 hover:text-ink sm:min-h-8"
                       >
                         <span className="link-draw">{link.label}</span>
                       </Link>
@@ -69,60 +71,13 @@ export function Footer() {
           </nav>
         </div>
 
-        {/* Real contact block: order line, email, and the people behind the house. */}
-        <div className="mt-16 grid gap-12 border-t border-line-light pt-12 md:mt-20 md:grid-cols-12 md:gap-8 md:pt-14">
-          <div className="md:col-span-6 lg:col-span-5">
-            <h2 className="eyebrow font-sans tracking-[0.26em] text-blush">Order on WhatsApp or call</h2>
-            <a
-              href={telHref}
-              className="link-draw mt-5 inline-block font-display text-[2rem] leading-tight text-ivory md:text-[2.5rem]"
-            >
-              {site.phone}
-            </a>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-light">
-                <WhatsAppGlyph size={16} />
-                WhatsApp us
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-              <a
-                href={telHref}
-                className="btn border border-ivory/40 text-ivory hover:border-ivory hover:bg-ivory hover:text-ink"
-              >
-                Call now
-              </a>
-            </div>
-            <p className="mt-5 text-[13px] text-ivory/60">{site.hours}</p>
-          </div>
-
-          <div className="md:col-span-6 lg:col-span-4">
-            <h2 className="eyebrow font-sans tracking-[0.26em] text-blush">Write to us</h2>
-            <a
-              href={mailHref}
-              className="link-draw mt-5 inline-block break-all font-display text-2xl leading-tight text-ivory md:text-[1.75rem]"
-            >
-              {site.email}
-            </a>
-            <p className="mt-5 max-w-xs text-[13px] leading-relaxed text-ivory/60">
-              Pay securely by UPI after you order. We verify every payment by hand and confirm on WhatsApp.
-            </p>
-          </div>
-
-          <div className="md:col-span-12 lg:col-span-3">
-            <h2 className="eyebrow font-sans tracking-[0.26em] text-blush">The atelier</h2>
-            <p className="mt-5 font-display text-xl leading-snug text-ivory">Founded by {site.owner}</p>
-            <address className="mt-3 text-[14px] not-italic leading-relaxed text-ivory/70">
-              {site.city}
-              <span className="block text-ivory/50">{addressText}</span>
-            </address>
-          </div>
-        </div>
-
-        <div className="mt-16 flex flex-col gap-5 border-t border-line-light pt-8 text-[12px] text-ivory/50 md:mt-20 md:flex-row md:items-center md:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 text-[12px] text-stone md:mt-20 md:flex-row md:items-center md:justify-between">
           <p>
-            © {site.year} {site.name}. All rights reserved.
+            © {site.year} {site.name}. Founded by {site.owner}, {site.city}. {addressText}.
           </p>
-          <p className="eyebrow text-[10px] text-ivory/50">Handwoven in India · Delivered across India</p>
+          <a href={mailHref} className="link-draw w-fit">
+            {site.email}
+          </a>
         </div>
       </div>
     </footer>

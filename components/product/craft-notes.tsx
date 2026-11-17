@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import type { Category, Product } from "@/data/products";
 import { ImageReveal } from "@/components/motion/image-reveal";
@@ -9,14 +10,15 @@ type Craft = {
   notes: { title: string; text: string }[];
 };
 
-const CRAFT: Record<Category, Craft> = {
+/** Written notes for the house categories; categories added later simply skip this band. */
+const CRAFT: Partial<Record<Category, Craft>> = {
   sarees: {
     eyebrow: "The making",
     lines: [
       "A few inches",
-      <>
+      <Fragment key="line-1">
         a <em className="italic">day</em>.
-      </>,
+      </Fragment>,
     ],
     notes: [
       {
@@ -37,9 +39,9 @@ const CRAFT: Record<Category, Craft> = {
     eyebrow: "The making",
     lines: [
       "Made by hand,",
-      <>
+      <Fragment key="line-1">
         cut for <em className="italic">now</em>.
-      </>,
+      </Fragment>,
     ],
     notes: [
       {
@@ -60,9 +62,9 @@ const CRAFT: Record<Category, Craft> = {
     eyebrow: "The making",
     lines: [
       "The quiet",
-      <>
+      <Fragment key="line-1">
         <em className="italic">foundation</em>.
-      </>,
+      </Fragment>,
     ],
     notes: [
       {
@@ -84,6 +86,7 @@ const CRAFT: Record<Category, Craft> = {
 /** Editorial band between the purchase area and recommendations. */
 export function CraftNotes({ product }: { product: Product }) {
   const craft = CRAFT[product.category];
+  if (!craft) return null;
   const image = product.images[2] ?? product.images[product.images.length - 1];
 
   return (

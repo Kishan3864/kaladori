@@ -4,12 +4,12 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useRef } from "react";
 import { threads } from "@/components/motion/thread-line";
-import { getCategory, type Category } from "@/data/products";
+import type { Category } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import {
   SORT_OPTIONS,
   buildShopHref,
-  categoryOptions,
+  type CategoryOption,
   pad,
   parseSort,
   sortLabel,
@@ -19,6 +19,8 @@ import {
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 type FilterBarProps = ShopState & {
+  /** "All" plus each category with counts (from the live catalogue). */
+  options: CategoryOption[];
   resultCount: number;
   onChange: (next: ShopState) => void;
 };
@@ -30,11 +32,11 @@ type FilterBarProps = ShopState & {
  * just below the header while the header is showing and slides up to the
  * top when the header hides (--header-offset, see globals.css).
  */
-export function FilterBar({ category, sort, resultCount, onChange }: FilterBarProps) {
+export function FilterBar({ options, category, sort, resultCount, onChange }: FilterBarProps) {
   const selectId = useId();
   const listRef = useRef<HTMLUListElement>(null);
   const reduceMotion = useReducedMotion();
-  const activeName = category ? getCategory(category)?.name : undefined;
+  const activeName = category ? options.find((o) => o.slug === category)?.name : undefined;
 
   // Keep the active filter visible in the scrollable row on small screens.
   useEffect(() => {
@@ -63,7 +65,7 @@ export function FilterBar({ category, sort, resultCount, onChange }: FilterBarPr
             layoutScroll
             className="no-scrollbar relative -mx-5 flex gap-7 overflow-x-auto px-5 md:mx-0 md:gap-10 md:px-0"
           >
-            {categoryOptions.map((option) => {
+            {options.map((option) => {
               const active = option.slug === category;
               return (
                 <li key={option.slug ?? "all"} className="shrink-0">

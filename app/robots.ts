@@ -6,8 +6,8 @@ const base = site.url;
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    // Private / per-customer pages: admin panel, checkout and order-status links.
-    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/checkout", "/order"] },
+    // Private / per-customer pages (admin, checkout, order-status links) and the design lab.
+    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/checkout", "/order", "/lab"] },
     sitemap: `${base}/sitemap.xml`,
     host: base,
   };

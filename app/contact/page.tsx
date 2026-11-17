@@ -116,6 +116,7 @@ export default function ContactPage() {
                 src={editorial.contact.src}
                 alt={editorial.contact.alt}
                 fill
+                loading="eager"
                 sizes="(min-width: 1600px) 480px, (min-width: 1024px) 30vw, (min-width: 640px) 60vw, 82vw"
                 className="object-cover"
               />

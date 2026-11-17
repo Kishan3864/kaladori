@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import type { Category, Product } from "@/data/products";
 import { MaskedLines, Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
@@ -42,9 +43,9 @@ export function RelatedProducts({ products, category, categoryName }: RelatedPro
               className="text-display mt-6"
               lines={[
                 "In the same",
-                <>
+                <Fragment key="line-1">
                   <em className="italic">spirit</em>.
-                </>,
+                </Fragment>,
               ]}
             />
           </div>

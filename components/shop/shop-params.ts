@@ -1,9 +1,11 @@
-import { categories, isCategory, products, type Category, type Product } from "@/data/products";
+import type { Catalog, Category, Product } from "@/lib/catalog";
 
 /**
  * Shop state lives in the URL: /shop?category=sarees&sort=price-asc.
  * Defaults (all categories, featured order) are omitted from the URL.
  * Server-safe: shared by the page, the Suspense fallback and the client view.
+ * Everything that needs the catalogue takes it as an argument (it comes from
+ * the admin-edited store, loaded on the server).
  */
 
 export const SORT_OPTIONS = [
@@ -27,8 +29,8 @@ export function isSortKey(value: string | null | undefined): value is SortKey {
 }
 
 /** Unknown or missing values fall back to "all categories". */
-export function parseCategory(value: string | null | undefined): Category | null {
-  return isCategory(value) ? value : null;
+export function parseCategory(catalog: Catalog, value: string | null | undefined): Category | null {
+  return value && catalog.categories.some((c) => c.slug === value) ? value : null;
 }
 
 /** Unknown or missing values fall back to the featured order. */
@@ -49,12 +51,10 @@ export function buildShopHref(category: Category | null, sort: SortKey) {
   return query ? `/shop?${query}` : "/shop";
 }
 
-const catalogueIndex = new Map(products.map((product, index) => [product.slug, index]));
-const byCatalogue = (a: Product, b: Product) =>
-  (catalogueIndex.get(a.slug) ?? 0) - (catalogueIndex.get(b.slug) ?? 0);
-
 /** Filter by category (null = everything), then order. Ties keep catalogue order. */
-export function getShopProducts(category: Category | null, sort: SortKey): Product[] {
+export function getShopProducts(products: Product[], category: Category | null, sort: SortKey): Product[] {
+  const index = new Map(products.map((product, i) => [product.slug, i]));
+  const byCatalogue = (a: Product, b: Product) => (index.get(a.slug) ?? 0) - (index.get(b.slug) ?? 0);
   const list = category ? products.filter((p) => p.category === category) : [...products];
 
   switch (sort) {
@@ -76,14 +76,16 @@ export type CategoryOption = {
 };
 
 /** "All" plus each category, with item counts for the filter row. */
-export const categoryOptions: CategoryOption[] = [
-  { slug: null, name: "All", count: products.length },
-  ...categories.map((c) => ({
-    slug: c.slug,
-    name: c.name,
-    count: products.filter((p) => p.category === c.slug).length,
-  })),
-];
+export function categoryOptions(catalog: Catalog): CategoryOption[] {
+  return [
+    { slug: null, name: "All", count: catalog.products.length },
+    ...catalog.categories.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      count: catalog.products.filter((p) => p.category === c.slug).length,
+    })),
+  ];
+}
 
 /** 4 → "04" — editorial numbering. */
 export function pad(n: number) {

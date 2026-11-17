@@ -60,12 +60,20 @@ export function Stagger({ children, stagger = 0.09, delay = 0, amount = 0.05, ..
   );
 }
 
-export function StaggerItem({ children, ...rest }: HTMLMotionProps<"div">) {
+export function StaggerItem({
+  children,
+  depth = false,
+  ...rest
+}: HTMLMotionProps<"div"> & {
+  /** Tip up from a slight backward lean (needs `perspective` on the parent). */
+  depth?: boolean;
+}) {
   return (
     <motion.div
+      style={depth ? { transformOrigin: "50% 100%" } : undefined}
       variants={{
-        hidden: { opacity: 0, y: 24 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
+        hidden: depth ? { opacity: 0, y: 48, rotateX: 18 } : { opacity: 0, y: 24 },
+        show: { opacity: 1, y: 0, rotateX: 0, transition: { duration: depth ? 1.1 : 0.9, ease: EASE } },
       }}
       {...rest}
     >

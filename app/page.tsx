@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
-import { BrandPromises } from "@/components/home/brand-promises";
-import { BrandStory } from "@/components/home/brand-story";
-import { CategoryMarquee } from "@/components/home/category-marquee";
-import { CategoryTiles } from "@/components/home/category-tiles";
-import { Hero } from "@/components/home/hero";
-import { Lookbook } from "@/components/home/lookbook";
-import { NewArrivals } from "@/components/home/new-arrivals";
-import { Newsletter } from "@/components/home/newsletter";
-import { Testimonials } from "@/components/home/testimonials";
-import { editorial } from "@/lib/images";
+import { getHeroData } from "@/components/home/heroes/data";
+import { ACTIVE_HERO, HomeHero } from "@/components/home/heroes/registry";
+import { HomeSections } from "@/components/home/home-sections";
 import { site } from "@/lib/site";
 
 const title = "KalaDori Textile — Handwoven Sarees, Kurtis & Pants";
@@ -24,13 +17,12 @@ export const metadata: Metadata = {
     siteName: site.name,
     title,
     description: site.description,
-    images: [{ url: editorial.hero.src, alt: editorial.hero.alt }],
+    // Brand card from the lotus pack (app/opengraph-image.png) for link previews.
   },
   twitter: {
     card: "summary_large_image",
     title,
     description: site.description,
-    images: [{ url: editorial.hero.src, alt: editorial.hero.alt }],
   },
 };
 
@@ -44,7 +36,7 @@ const jsonLd = {
       url: site.url,
       logo: {
         "@type": "ImageObject",
-        url: `${site.url}/brand/icon-512.png`,
+        url: `${site.url}/brand/favicon/icon-512.png`,
         width: 512,
         height: 512,
       },
@@ -64,22 +56,17 @@ const jsonLd = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const heroData = await getHeroData();
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <Hero />
-      <CategoryMarquee />
-      <CategoryTiles />
-      <NewArrivals />
-      <BrandStory />
-      <Lookbook />
-      <Testimonials />
-      <BrandPromises className="pb-20 md:pb-28" />
-      <Newsletter />
+      {/* Which saved hero design is live: components/home/heroes/registry.tsx */}
+      <HomeHero id={ACTIVE_HERO} data={heroData} />
+      <HomeSections />
     </>
   );
 }

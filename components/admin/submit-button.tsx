@@ -14,6 +14,7 @@ export function SubmitButton({
   className,
   name,
   value,
+  "aria-label": ariaLabel,
 }: {
   children: React.ReactNode;
   pendingLabel?: string;
@@ -21,6 +22,7 @@ export function SubmitButton({
   className?: string;
   name?: string;
   value?: string;
+  "aria-label"?: string;
 }) {
   const { pending, data } = useFormStatus();
   // Only the clicked button shows its pending label when a form has several.
@@ -31,6 +33,7 @@ export function SubmitButton({
       type="submit"
       name={name}
       value={value}
+      aria-label={ariaLabel}
       disabled={pending}
       aria-busy={mine || undefined}
       onClick={(event) => {

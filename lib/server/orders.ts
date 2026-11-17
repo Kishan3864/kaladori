@@ -1,6 +1,7 @@
 /** Orders: creation (server-side pricing), lookup, status updates. SERVER ONLY. */
 import { randomBytes, randomInt } from "node:crypto";
-import { getProduct } from "@/data/products";
+import { getProduct } from "@/lib/catalog";
+import { getCatalog } from "@/lib/server/catalog";
 import { policies, site } from "@/lib/site";
 import { readCollection, updateCollection } from "@/lib/server/store";
 
@@ -96,11 +97,12 @@ export function validateCustomer(raw: Partial<Record<keyof Customer, unknown>>) 
   return { customer: c, errors };
 }
 
-/** Price the cart from the catalogue — never trust client prices. */
-export function priceItems(items: OrderInput["items"]) {
+/** Price the cart from the live catalogue: never trust client prices. Hidden or deleted pieces drop out. */
+export async function priceItems(items: OrderInput["items"]) {
+  const catalog = await getCatalog();
   const lines: OrderLine[] = [];
   for (const raw of items.slice(0, 30)) {
-    const product = getProduct(String(raw.slug));
+    const product = getProduct(catalog, String(raw.slug));
     if (!product) continue;
     const size = product.sizes.includes(String(raw.size)) ? String(raw.size) : null;
     if (!size) continue;
@@ -132,7 +134,7 @@ function orderNumber(now: Date) {
 
 export async function createOrder(input: OrderInput) {
   const { customer, errors } = validateCustomer(input.customer ?? {});
-  const priced = priceItems(Array.isArray(input.items) ? input.items : []);
+  const priced = await priceItems(Array.isArray(input.items) ? input.items : []);
   if (priced.lines.length === 0) errors.items = "Your bag is empty.";
   if (Object.keys(errors).length > 0) return { ok: false as const, errors };
 

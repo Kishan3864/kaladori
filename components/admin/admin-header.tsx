@@ -5,10 +5,12 @@ import { SubmitButton } from "./submit-button";
 
 const TABS = [
   { key: "orders", label: "Orders", href: "/admin" },
+  { key: "products", label: "Products", href: "/admin/products" },
+  { key: "categories", label: "Categories", href: "/admin/categories" },
   { key: "messages", label: "Messages", href: "/admin/messages" },
 ] as const;
 
-/** Static admin chrome: title, Orders | Messages tabs, sign-out. */
+/** Static admin chrome: title, Orders | Products | Categories | Messages tabs, sign-out. */
 export function AdminHeader({ active }: { active: (typeof TABS)[number]["key"] }) {
   return (
     <div className="border-b border-line pb-4">
@@ -23,14 +25,14 @@ export function AdminHeader({ active }: { active: (typeof TABS)[number]["key"] }
           </SubmitButton>
         </form>
       </div>
-      <nav aria-label="Admin sections" className="mt-6 flex gap-6">
+      <nav aria-label="Admin sections" className="no-scrollbar -mx-5 mt-6 flex gap-6 overflow-x-auto px-5 md:mx-0 md:px-0">
         {TABS.map((tab) => (
           <Link
             key={tab.key}
             href={tab.href}
             aria-current={tab.key === active ? "page" : undefined}
             className={cn(
-              "eyebrow -mb-[17px] border-b-2 pb-4 transition-colors",
+              "eyebrow -mb-[17px] shrink-0 border-b-2 pb-4 transition-colors",
               tab.key === active ? "border-maroon text-ink" : "border-transparent text-stone hover:text-ink",
             )}
           >

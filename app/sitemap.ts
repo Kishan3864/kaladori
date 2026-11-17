@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { LAST_UPDATED, policyPages } from "@/components/legal/policy-data";
-import { products } from "@/data/products";
+import { getCatalog } from "@/lib/server/catalog";
 import { site } from "@/lib/site";
 
 /**
@@ -18,7 +18,8 @@ function xmlSafe(url: string) {
   return url.replace(/&/g, "&amp;");
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { products } = await getCatalog();
   const pages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: LAST_MODIFIED, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/shop`, lastModified: LAST_MODIFIED, changeFrequency: "daily", priority: 0.9 },
@@ -37,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: LAST_MODIFIED,
     changeFrequency: "weekly",
     priority: product.isNew ? 0.8 : 0.7,
-    images: product.images.slice(0, 2).map(xmlSafe),
+    images: product.images.slice(0, 2).map((src) => xmlSafe(src.startsWith("/") ? `${base}${src}` : src)),
   }));
 
   return [...pages, ...productPages];

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getCategory, getProduct, getRelatedProducts, products } from "@/data/products";
+import { getCategory, getProduct, getRelatedProducts } from "@/lib/catalog";
+import { getCatalog } from "@/lib/server/catalog";
 import { site } from "@/lib/site";
 import { BrandPromises } from "@/components/home/brand-promises";
 import { Breadcrumbs } from "@/components/product/breadcrumbs";
@@ -16,12 +17,14 @@ type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const { products } = await getCatalog();
   return products.map((product) => ({ slug: product.slug }));
 }
 
-/** Resize an Unsplash URL for social cards (4:5, 1200 wide). */
+/** Social card image: Unsplash resized to 4:5 at 1200 wide; uploaded photos made absolute. */
 function socialImage(src: string) {
+  if (src.startsWith("/")) return `${site.url}${src}`;
   const url = new URL(src);
   url.searchParams.set("w", "1200");
   url.searchParams.set("h", "1500");
@@ -31,10 +34,11 @@ function socialImage(src: string) {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const catalog = await getCatalog();
+  const product = getProduct(catalog, slug);
   if (!product) notFound();
 
-  const category = getCategory(product.category);
+  const category = getCategory(catalog, product.category);
   const path = `/product/${product.slug}`;
   const title = `${product.name} — ${site.name}`;
   const image = {
@@ -81,12 +85,13 @@ export default function ProductPage(props: ProductPageProps) {
 
 async function ProductDetail({ params }: { params: ProductPageProps["params"] }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const catalog = await getCatalog();
+  const product = getProduct(catalog, slug);
   if (!product) notFound();
 
-  const category = getCategory(product.category);
+  const category = getCategory(catalog, product.category);
   const categoryName = category?.name ?? product.category;
-  const related = getRelatedProducts(product.slug, 4);
+  const related = getRelatedProducts(catalog, product.slug, 4);
 
   return (
     <div data-pdp="">

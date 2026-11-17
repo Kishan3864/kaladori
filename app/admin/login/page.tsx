@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
     <div className="shell py-12 md:py-20">
       <div className="mx-auto flex w-full max-w-sm flex-col items-center">
         <div className="w-44">
-          <Logo href={null} />
+          <Logo layout="stacked" href={null} />
         </div>
         <div className="mt-10 w-full border border-line bg-ivory p-6 md:p-8">
           <p className="eyebrow text-maroon">Admin</p>

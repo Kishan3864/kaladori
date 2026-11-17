@@ -53,3 +53,30 @@ export function updateCollection<T, R>(file: string, mutate: (items: T[]) => { i
     return result;
   });
 }
+
+/* ------------------------------------------------------------------------
+   Single-document files (an object rather than an array), e.g. the catalogue.
+   `fallback` supplies the document when the file does not exist yet.
+------------------------------------------------------------------------- */
+
+/** Read a document file, or the fallback when it has never been written. */
+export function readDocument<T>(file: string, fallback: () => T): Promise<T> {
+  return serialise(async () => {
+    const doc = await readFileJson<T | null>(file, null);
+    return doc ?? fallback();
+  });
+}
+
+/** Read-modify-write a document atomically. */
+export function updateDocument<T, R>(
+  file: string,
+  fallback: () => T,
+  mutate: (doc: T) => { doc: T; result: R },
+): Promise<R> {
+  return serialise(async () => {
+    const current = (await readFileJson<T | null>(file, null)) ?? fallback();
+    const { doc, result } = mutate(current);
+    await writeFileJson(file, doc);
+    return result;
+  });
+}

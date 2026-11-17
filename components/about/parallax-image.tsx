@@ -48,7 +48,7 @@ export function ParallaxImage({
     <div ref={ref} className={cn("relative", className)}>
       <ImageReveal className="h-full w-full" from={from} delay={delay}>
         <motion.div className="absolute inset-x-0 -inset-y-[12%]" style={{ y: reduceMotion ? 0 : y }}>
-          <Image src={src} alt={alt} fill sizes={sizes} preload={priority} className="object-cover" />
+          <Image src={src} alt={alt} fill sizes={sizes} preload={priority} loading={priority ? "eager" : undefined} className="object-cover" />
         </motion.div>
       </ImageReveal>
     </div>

@@ -1,6 +1,13 @@
 import { unsplash } from "@/lib/images";
 
-export type Category = "sarees" | "kurtis" | "pants";
+/**
+ * Seed catalogue. The live catalogue is edited in the admin panel and stored
+ * in DATA_DIR/catalog.json (lib/server/catalog.ts); this file only fills it
+ * the first time, and defines the shapes.
+ */
+
+/** A category slug, e.g. "sarees". Categories are managed in the admin. */
+export type Category = string;
 
 export type Product = {
   slug: string;
@@ -26,6 +33,8 @@ export type Product = {
   isNew?: boolean;
   /** Short badge such as "Limited" or "Handloom". */
   badge?: string;
+  /** false hides the product from the shop (it stays in the admin). Default true. */
+  published?: boolean;
 };
 
 export type CategoryInfo = {
@@ -36,7 +45,7 @@ export type CategoryInfo = {
   description: string;
 };
 
-export const categories: CategoryInfo[] = [
+export const SEED_CATEGORIES: CategoryInfo[] = [
   {
     slug: "sarees",
     name: "Sarees",
@@ -80,7 +89,7 @@ const LINEN_CARE = [
   "Iron while slightly damp for a crisp finish",
 ];
 
-export const products: Product[] = [
+export const SEED_PRODUCTS: Product[] = [
   // ——— Sarees ———
   {
     slug: "kesar-banarasi-silk-saree",
@@ -399,48 +408,3 @@ export const products: Product[] = [
     ],
   },
 ];
-
-// ——— Helpers ———
-
-export function getProduct(slug: string) {
-  return products.find((p) => p.slug === slug);
-}
-
-export function getProductsByCategory(category: Category) {
-  return products.filter((p) => p.category === category);
-}
-
-export function getCategory(slug: string) {
-  return categories.find((c) => c.slug === slug);
-}
-
-export function isCategory(value: string | null | undefined): value is Category {
-  return value === "sarees" || value === "kurtis" || value === "pants";
-}
-
-/** Products flagged as new, in catalogue order. */
-export function getNewArrivals(limit = 4) {
-  return products.filter((p) => p.isNew).slice(0, limit);
-}
-
-/** The category whose pieces are most naturally worn with each category. */
-const COMPLEMENT: Record<Category, Category> = {
-  sarees: "kurtis",
-  kurtis: "pants",
-  pants: "kurtis",
-};
-
-/**
- * Same-category products first, then the complementary category (a kurti
- * page ends with a trouser, a trouser page with a kurti), then the rest.
- * Excludes the given slug.
- */
-export function getRelatedProducts(slug: string, limit = 4) {
-  const current = getProduct(slug);
-  if (!current) return products.slice(0, limit);
-  const complement = COMPLEMENT[current.category];
-  const same = products.filter((p) => p.category === current.category && p.slug !== slug);
-  const paired = products.filter((p) => p.category === complement);
-  const rest = products.filter((p) => p.category !== current.category && p.category !== complement);
-  return [...same, ...paired, ...rest].slice(0, limit);
-}

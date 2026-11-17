@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MaskedLines, Reveal } from "@/components/motion/reveal";
 import { ThreadDraw } from "@/components/motion/thread-line";
-import { categories } from "@/data/products";
+import { getCatalog } from "@/lib/server/catalog";
 
 export const metadata: Metadata = {
   title: "Page not found",
   description: "The page you were looking for has moved or no longer exists.",
 };
 
-export default function NotFound() {
+export default async function NotFound() {
+  const { categories } = await getCatalog();
   return (
     <div className="relative">
       <div className="shell pt-14 md:pt-24">

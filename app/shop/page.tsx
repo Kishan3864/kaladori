@@ -5,7 +5,8 @@ import { CatalogueView } from "@/components/shop/catalogue-view";
 import { ShopCatalogue } from "@/components/shop/shop-catalogue";
 import { ShopHeader } from "@/components/shop/shop-header";
 import { DEFAULT_SORT } from "@/components/shop/shop-params";
-import { products } from "@/data/products";
+import type { Catalog } from "@/lib/catalog";
+import { getCatalog } from "@/lib/server/catalog";
 import { editorial } from "@/lib/images";
 import { site } from "@/lib/site";
 
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
 };
 
 /** CollectionPage + ItemList structured data for the full catalogue. */
-const structuredData = JSON.stringify({
+const structuredData = ({ products }: Catalog) => JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: socialTitle,
@@ -60,10 +61,11 @@ const structuredData = JSON.stringify({
   },
 }).replace(/</g, "\\u003c");
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const catalog = await getCatalog();
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData(catalog) }} />
 
       <ShopHeader />
 
@@ -72,8 +74,8 @@ export default function ShopPage() {
         The fallback is the complete, unfiltered catalogue — the prerendered HTML
         carries every product for crawlers and for readers before hydration.
       */}
-      <Suspense fallback={<CatalogueView category={null} sort={DEFAULT_SORT} isFallback />}>
-        <ShopCatalogue />
+      <Suspense fallback={<CatalogueView catalog={catalog} category={null} sort={DEFAULT_SORT} isFallback />}>
+        <ShopCatalogue catalog={catalog} />
       </Suspense>
 
       <BrandPromises className="pb-20 md:pb-28" />

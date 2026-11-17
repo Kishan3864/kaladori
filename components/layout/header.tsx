@@ -6,12 +6,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/layout/logo";
 import { selectCount, useCart } from "@/lib/cart-store";
 import { useEscapeKey, useLockBodyScroll } from "@/lib/hooks";
-import { navigation, site } from "@/lib/site";
+import { navigation, site, type NavLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export function Header() {
+/** `primary`: "Shop all" + live categories (built in the root layout from the catalogue). */
+export function Header({ primary = navigation.primary }: { primary?: readonly NavLink[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -74,107 +75,89 @@ export function Header() {
 
   return (
     <>
-      {/* Announcement */}
-      <div className="bg-ink text-ivory">
-        <p className="shell eyebrow py-2.5 text-center text-[10px] text-ivory/85 sm:text-[11px]">
-          Complimentary shipping across India on orders of ₹{site.freeShippingThreshold.toLocaleString("en-IN")} and above
-        </p>
-      </div>
-
       <motion.header
+        id="site-header"
+        data-menu-open={menuOpen ? "true" : undefined}
+        data-scrolled={scrolled ? "true" : undefined}
         className={cn(
           "sticky top-0 z-50 border-b transition-colors duration-500",
-          scrolled || menuOpen
-            ? "border-line bg-ivory/95 backdrop-blur-sm"
-            : "border-transparent bg-ivory",
+          scrolled || menuOpen ? "border-line bg-ivory/90 backdrop-blur-md" : "border-transparent bg-ivory",
         )}
         animate={{ y: hidden ? "-100%" : "0%" }}
         transition={{ duration: 0.5, ease: EASE }}
       >
-        {/* Tall enough for the full lock-up, so "TEXTILE" under the wordmark stays legible. */}
-        <div className="shell grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 md:h-[88px]">
-          {/* Left: menu button (mobile) / primary nav (desktop) */}
-          <div className="flex items-center">
-            <button
-              ref={toggleRef}
-              type="button"
-              className="-ml-2 flex h-11 items-center gap-3 px-2 lg:hidden"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <span className="relative block h-3 w-6" aria-hidden="true">
-                <span
-                  className={cn(
-                    "absolute left-0 top-0 h-px w-6 bg-ink transition-transform duration-500 ease-editorial",
-                    menuOpen && "translate-y-1.5 rotate-45",
-                  )}
-                />
-                <span
-                  className={cn(
-                    "absolute bottom-0 left-0 h-px w-6 bg-ink transition-transform duration-500 ease-editorial",
-                    menuOpen && "-translate-y-1.5 -rotate-45",
-                  )}
-                />
-              </span>
-              <span className="eyebrow hidden sm:inline">{menuOpen ? "Close" : "Menu"}</span>
-              <span className="sr-only sm:hidden">{menuOpen ? "Close menu" : "Open menu"}</span>
-            </button>
+        <div className="shell flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+          {/* Logo (kept at 140px+ so "TEXTILE" stays legible) */}
+          <Logo tone="auto" priority className="w-[150px] min-[360px]:w-[176px] md:w-[210px]" onClick={closeMenu} />
 
-            <nav aria-label="Primary" className="hidden lg:block">
-              <ul className="flex items-center gap-8">
-                {navigation.primary.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} onClick={closeMenu} className="eyebrow link-draw py-1">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+          {/* Desktop navigation, one line */}
+          <nav aria-label="Primary" className="hidden lg:block">
+            <ul className="flex items-center gap-9">
+              {[...primary, ...navigation.secondary].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={closeMenu}
+                    className="hdr-fg link-draw py-1 text-[13px] tracking-[0.04em] text-ink/80 transition-colors duration-300 hover:text-ink"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-          {/* Centre: logo */}
-          <Logo priority className="w-[140px] sm:w-[156px] md:w-[196px] xl:w-[212px]" onClick={closeMenu} />
-
-          {/* Right: secondary nav + bag */}
-          <div className="flex items-center justify-end gap-8">
-            <nav aria-label="Secondary" className="hidden lg:block">
-              <ul className="flex items-center gap-8">
-                {navigation.secondary.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} onClick={closeMenu} className="eyebrow link-draw py-1">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <div className="-mr-2 flex items-center gap-1">
             <button
               type="button"
               onClick={() => {
                 closeMenu();
                 openCart();
               }}
-              className="eyebrow -mr-2 flex h-11 items-center gap-2 px-2"
+              className="hdr-fg flex h-11 items-center gap-2 px-2 text-[13px] tracking-[0.04em]"
               aria-label={bagLabel}
             >
-              <span>Bag</span>
+              <BagIcon />
               <span
                 className={cn(
-                  "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] tracking-normal transition-colors duration-300",
-                  hasHydrated && count > 0 ? "bg-maroon text-ivory" : "border border-ink/30 text-ink/60",
+                  "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] tabular-nums transition-colors duration-300",
+                  hasHydrated && count > 0 ? "bg-maroon text-ivory" : "hdr-badge bg-sand text-ink/60",
                 )}
                 aria-hidden="true"
               >
                 {hasHydrated ? count : 0}
               </span>
             </button>
+
+            <button
+              ref={toggleRef}
+              type="button"
+              className="flex h-11 w-11 items-center justify-center lg:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <span className="relative block h-2.5 w-6" aria-hidden="true">
+                <span
+                  className={cn(
+                    "hdr-bar absolute left-0 top-0 h-px w-6 bg-ink transition-transform duration-500 ease-editorial",
+                    menuOpen && "translate-y-[5px] rotate-45",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "hdr-bar absolute bottom-0 left-0 h-px w-6 bg-ink transition-transform duration-500 ease-editorial",
+                    menuOpen && "-translate-y-[4px] -rotate-45",
+                  )}
+                />
+              </span>
+            </button>
           </div>
         </div>
       </motion.header>
 
-      <MobileMenu open={menuOpen} onClose={closeMenu} />
+      <MobileMenu open={menuOpen} onClose={closeMenu} primary={primary} />
     </>
   );
 }
@@ -186,8 +169,17 @@ export function Header() {
  * between the header controls and these links. z-[45] also keeps it above
  * fixed page chrome such as the product page's buy bar (z-40).
  */
-function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const links = [...navigation.primary, ...navigation.secondary];
+function BagIcon() {
+  return (
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z" />
+      <path d="M9 10V6.5a3 3 0 0 1 6 0V10" />
+    </svg>
+  );
+}
+
+function MobileMenu({ open, onClose, primary }: { open: boolean; onClose: () => void; primary: readonly NavLink[] }) {
+  const links = [...primary, ...navigation.secondary];
 
   return (
     <AnimatePresence>
@@ -195,7 +187,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         <motion.div
           id="mobile-menu"
           key="mobile-menu"
-          className="fixed inset-x-0 bottom-0 top-0 z-[45] flex flex-col overflow-y-auto bg-ivory pt-[108px] md:pt-[128px] lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-0 z-[45] flex flex-col overflow-y-auto bg-ivory pt-16 md:pt-[4.5rem] lg:hidden"
           initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{ clipPath: "inset(0% 0% 100% 0%)" }}

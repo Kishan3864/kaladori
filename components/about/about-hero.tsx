@@ -2,7 +2,8 @@ import { MaskedLines, Reveal } from "@/components/motion/reveal";
 
 const glossary = [
   { term: "Kalā", meaning: "art; skill; the knowledge held in the hand." },
-  { term: "Dorī", meaning: "thread; the cord that binds one thing to another." },
+  // Written as dotless i + combining macron: Newsreader's precomposed ī keeps the dot under the bar.
+  { term: "Dorı̄", meaning: "thread; the cord that binds one thing to another." },
 ] as const;
 
 /** Opening statement for /about: oversized Bodoni headline with a glossary of the house name. */
