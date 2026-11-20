@@ -58,29 +58,6 @@ const CRAFT: Partial<Record<Category, Craft>> = {
       },
     ],
   },
-  pants: {
-    eyebrow: "The making",
-    lines: [
-      "The quiet",
-      <Fragment key="line-1">
-        <em className="italic">foundation</em>.
-      </Fragment>,
-    ],
-    notes: [
-      {
-        title: "The cloth",
-        text: "Washed linen, silk crepe and cotton twill, chosen for the way they move and the way they soften over time.",
-      },
-      {
-        title: "The cut",
-        text: "Considered rises, true pleats and real pockets, patterned in our studio and pressed by hand before dispatch.",
-      },
-      {
-        title: "The pairing",
-        text: "Designed to sit beneath our kurtis — and beneath everything else you already love to wear.",
-      },
-    ],
-  },
 };
 
 /** Editorial band between the purchase area and recommendations. */

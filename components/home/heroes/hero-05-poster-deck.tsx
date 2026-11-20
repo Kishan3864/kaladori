@@ -40,7 +40,7 @@ const DEPTH = 3;
 export const LABEL: Record<CatalogPhoto["category"], string> = {
   sarees: "Sarees",
   kurtis: "Kurtis",
-  pants: "Pants",
+  scarves: "Scarves",
   festive: "Festive",
 };
 

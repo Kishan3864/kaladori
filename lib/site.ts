@@ -7,7 +7,7 @@ export const site = {
   url: siteUrl,
   tagline: "Stitched like art.",
   description:
-    "KalaDori Textile is a modern Indian label of handwoven sarees, kurtis and tailored pants — heirloom craft, made with restraint for the way you live now.",
+    "KalaDori Textile is a modern Indian label of handwoven sarees, kurtis and scarves: heirloom craft, made with restraint for the way you live now.",
   email: "hello@kaladori.com",
   /** Founder & proprietor. */
   owner: "Komal Patel",
@@ -67,7 +67,7 @@ export const navigation = {
     { label: "Shop all", href: "/shop" },
     { label: "Sarees", href: "/shop?category=sarees" },
     { label: "Kurtis", href: "/shop?category=kurtis" },
-    { label: "Pants", href: "/shop?category=pants" },
+    { label: "Scarves", href: "/shop?category=scarves" },
   ],
   secondary: [
     { label: "About", href: "/about" },

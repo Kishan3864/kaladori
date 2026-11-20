@@ -87,6 +87,36 @@ function CartPanel({ closeCart }: { closeCart: () => void }) {
           <EmptyBag onClose={closeCart} />
         ) : (
           <>
+            {/* Where they are, and what to do next */}
+            <div className="border-b border-line bg-sand/50 px-6 py-4 sm:px-8">
+              <ol className="flex items-center gap-1.5 text-[11.5px]" aria-label="How to order">
+                {["In your bag", "Send on WhatsApp", "Pay by UPI"].map((label, i) => (
+                  <li key={label} className="flex min-w-0 flex-1 items-center gap-1.5">
+                    <span
+                      aria-hidden="true"
+                      className={
+                        i === 0
+                          ? "flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ink text-[10px] text-ivory"
+                          : i === 1
+                            ? "flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0e7a6d] text-[10px] text-white ring-4 ring-[#0e7a6d]/15"
+                            : "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-ink/25 text-[10px] text-stone"
+                      }
+                    >
+                      {i === 0 ? "✓" : i + 1}
+                    </span>
+                    <span className={i === 1 ? "leading-tight font-medium text-ink" : "leading-tight text-stone"}>
+                      {label}
+                      {i === 1 ? <span className="sr-only"> (next step)</span> : null}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-2 text-[13px] text-ink/80">
+                Next: tap <strong className="font-medium text-ink">Send order on WhatsApp</strong> below. Your message is
+                ready with every detail, just press send. We confirm, then you pay by UPI.
+              </p>
+            </div>
+
             {/* Free shipping progress */}
             <div className="border-b border-line px-6 py-5 sm:px-8">
               <p className="text-[13px] text-stone">
@@ -130,19 +160,21 @@ function CartPanel({ closeCart }: { closeCart: () => void }) {
                   ? "Taxes included. Shipping calculated at checkout."
                   : "Taxes included · Complimentary shipping."}
               </p>
-              <Link href="/checkout" onClick={closeCart} className="btn btn-ink mt-6 w-full">
-                Proceed to checkout
-              </Link>
               <a
                 href={whatsappLink(bagWhatsappText(items))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-outline mt-3 w-full"
+                className="btn btn-whatsapp next-step-pulse-wa mt-6 w-full"
               >
-                <WhatsAppGlyph size={15} />
-                Order on WhatsApp
+                <WhatsAppGlyph size={16} />
+                Send order on WhatsApp
               </a>
-              <p className="mt-3 text-center text-[12.5px] text-stone">Pay by UPI · Every order confirmed personally</p>
+              <p className="mt-2.5 text-center text-[12.5px] text-stone">
+                Recommended: fastest, and every order is confirmed personally.
+              </p>
+              <Link href="/checkout" onClick={closeCart} className="btn btn-outline mt-3 w-full">
+                Or check out on the website
+              </Link>
               <button
                 type="button"
                 onClick={closeCart}

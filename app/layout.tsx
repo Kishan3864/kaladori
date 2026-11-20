@@ -31,7 +31,7 @@ const jost = Jost({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "KalaDori Textile — Handwoven Sarees, Kurtis & Pants",
+    default: "KalaDori Textile — Handwoven Sarees, Kurtis & Scarves",
     template: "%s — KalaDori Textile",
   },
   description: site.description,
@@ -42,7 +42,8 @@ export const metadata: Metadata = {
     "Banarasi silk saree",
     "Chanderi saree",
     "chikankari kurti",
-    "linen trousers",
+    "silk scarves",
+    "mulmul dupatta",
     "Indian designer clothing",
     "slow fashion India",
   ],
@@ -55,12 +56,12 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: site.name,
-    title: "KalaDori Textile — Handwoven Sarees, Kurtis & Pants",
+    title: "KalaDori Textile — Handwoven Sarees, Kurtis & Scarves",
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "KalaDori Textile — Handwoven Sarees, Kurtis & Pants",
+    title: "KalaDori Textile — Handwoven Sarees, Kurtis & Scarves",
     description: site.description,
   },
   // Favicon, icon.svg and apple-icon.png live in /app (Kaladori-Logo-Kit/06-website):

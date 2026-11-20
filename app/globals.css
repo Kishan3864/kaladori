@@ -249,6 +249,18 @@
   }
 }
 
+/* Order on WhatsApp: the recommended action. Deep WhatsApp green, readable
+   with white type (5:1). */
+@utility btn-whatsapp {
+  background-color: #0e7a6d;
+  color: #ffffff;
+  border: 1px solid #0e7a6d;
+  &:hover {
+    background-color: #0b6358;
+    border-color: #0b6358;
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -815,6 +827,33 @@ html.lenis body {
   transition-property: overflow;
   transition-duration: 1ms;
   transition-behavior: allow-discrete;
+}
+
+/* "Do this next": a soft ring that pulses round the step waiting for the shopper. */
+@keyframes next-step-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(154 45 76 / 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgb(154 45 76 / 0);
+  }
+}
+
+@keyframes next-step-pulse-wa {
+  0% {
+    box-shadow: 0 0 0 0 rgb(14 122 109 / 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgb(14 122 109 / 0);
+  }
+}
+
+.next-step-pulse {
+  animation: next-step-pulse 1.4s ease-out 3;
+}
+
+.next-step-pulse-wa {
+  animation: next-step-pulse-wa 1.6s ease-out infinite;
 }
 
 /* Marquees paused by a <MarqueeToggle> in the same group. */

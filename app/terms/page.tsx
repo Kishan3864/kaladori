@@ -57,7 +57,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          Our sarees, kurtis and pants are made in small batches with handloom weavers and craftspeople. Because every
+          Our sarees, kurtis and scarves are made in small batches with handloom weavers and craftspeople. Because every
           piece is woven and finished by hand, no two are exactly alike. Slubs, slight variations in the density of the
           weave, small differences in colour and in the placement of motifs, and the occasional knot are the signature of
           the handloom. They are a feature of the craft, not a defect, and are not treated as a fault under our returns

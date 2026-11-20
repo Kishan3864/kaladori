@@ -50,9 +50,9 @@ export const editorial = {
       src: unsplash("photo-1708534246051-7f47b279e94b", 2000),
       alt: "A woman in a wine-red kurta with white chikankari embroidery, seated on the grass",
     },
-    pants: {
-      src: unsplash("photo-1687825515654-23620796760c", 2000),
-      alt: "A woman in olive wide-leg trousers and a white top against a pale grey wall",
+    scarves: {
+      src: unsplash("photo-1694036317158-7a9b7cd5079b", 2000),
+      alt: "A woman in a sky-blue mulmul dupatta that lifts in the breeze",
     },
   },
   story: {
@@ -109,7 +109,7 @@ export const editorial = {
  * `tone` is the dominant backdrop colour: the hero's room takes it on.
  */
 export type CatalogPhoto = EditorialImage & {
-  category: "sarees" | "kurtis" | "pants" | "festive";
+  category: "sarees" | "kurtis" | "scarves" | "festive";
   tone: string;
   position?: string;
 };
@@ -127,11 +127,11 @@ export const posterDeck: CatalogPhoto[] = [
   catalog("photo-1610030469983-98e550d6193c", "sarees", "#7d1820", "A woman in a violet and gold silk saree against a red studio backdrop", "50% 25%"),
   catalog("photo-1773439878514-65d4aeb43046", "kurtis", "#20253a", "A woman in a navy embroidered kurta set with a beige dupatta", "50% 25%"),
   catalog("photo-1617633150878-7df1d12a9a57", "festive", "#5a1419", "A bride in a red and gold lehenga with heavy gold jewellery", "50% 20%"),
-  catalog("photo-1768289222419-255b80c65259", "pants", "#8a1e1d", "Red floral wide-leg trousers, a hand resting in the pocket", "50% 40%"),
+  catalog("photo-1694036317280-250d7ecce698", "scarves", "#2f4a3e", "A woman letting a sky-blue dupatta fly in a garden", "50% 30%"),
   catalog("photo-1610030469668-8e9f641aaf27", "sarees", "#7f1a1f", "A woman in a black saree with a silver border against a red backdrop", "50% 25%"),
   catalog("photo-1767785829347-cc13bd969514", "kurtis", "#3a2b21", "A woman in a printed co-ord set posing in a warm arched room", "50% 30%"),
   catalog("photo-1610047614301-13c63f00c032", "festive", "#3d2312", "A bride in red and gold, seated under warm light", "50% 25%"),
-  catalog("photo-1768289222438-ee2993148ad2", "pants", "#4e2219", "A woman in a red floral co-ord with wide-leg pants", "50% 25%"),
+  catalog("photo-1689193502879-362660fad4a8", "scarves", "#5a1d1f", "A woman in a red printed silk scarf", "50% 30%"),
 ];
 
 /** The poster wall below the hero: two rows of catalog shots. */
@@ -140,24 +140,24 @@ export const posterWall: CatalogPhoto[][] = [
     catalog("photo-1727430228383-aa1fb59db8bf", "sarees", "#c9a27a", "A woman in an orange silk saree by the sea"),
     catalog("photo-1745313452052-0e4e341f326c", "kurtis", "#e9e2d8", "A white floral kurta set in a studio"),
     catalog("photo-1654764746225-e63f5e90facd", "festive", "#2b2b30", "A bride in a red lehenga under carved arches"),
-    catalog("photo-1789110520665-f07353f0afbe", "pants", "#f4f1ec", "Red palm-print wide-leg trousers"),
+    catalog("photo-1694036317182-58bb7cec5bfa", "scarves", "#3c5a3f", "A sky-blue dupatta caught mid-swirl"),
     catalog("photo-1679006831648-7c9ea12e5807", "sarees", "#9fb0a8", "A woman in a teal silk saree with temple jewellery"),
     catalog("photo-1764928947261-f5687e0faa4a", "kurtis", "#c8b89a", "A floral co-ord set with a straw bag among palms"),
     catalog("photo-1610047614256-023d7c028d0b", "festive", "#4a1f16", "A bride in red seated in a carved wooden chair"),
-    catalog("photo-1763558978011-55404124a148", "pants", "#e8e2d6", "A printed jumpsuit with a straw hat"),
+    catalog("photo-1717586756136-d9a3eeb1fa6f", "scarves", "#9c2a4f", "A rani-pink silk stole with gold zari stripes"),
     catalog("photo-1610189012906-4c0aa9b9781e", "sarees", "#a41c24", "A royal blue and gold saree against red"),
-    catalog("photo-1741847639057-b51a25d42892", "kurtis", "#ebe4da", "A pink floral kurta and pants in a studio"),
+    catalog("photo-1741847639057-b51a25d42892", "kurtis", "#ebe4da", "A pink floral kurta set in a studio"),
   ],
   [
     catalog("photo-1610173827043-9db50e0d8ef9", "festive", "#7a1a2a", "A bride in pink and red with henna and gold"),
-    catalog("photo-1789110854083-e4752bded644", "pants", "#f4f1ec", "White pinstripe high-waisted trousers"),
+    catalog("photo-1759599870816-8419bf6b58a1", "scarves", "#5a3f6b", "Paisley stoles in jewel colours"),
     catalog("photo-1610030469668-8e9f641aaf27", "sarees", "#7f1a1f", "A black and silver saree against red"),
     catalog("photo-1762777777819-4d9aa5529368", "kurtis", "#e7e1d8", "A pink floral kurta set with a tie neck"),
     catalog("photo-1697684459863-308b1c497ff2", "festive", "#2a2018", "A bride in red at night under golden lights"),
-    catalog("photo-1767077280564-6521b1487d83", "pants", "#d9d3c7", "A blue floral co-ord with wide-leg pants"),
+    catalog("photo-1558600333-fd674768ae04", "scarves", "#e9e2d8", "A red and white silk scarf tied in the hair"),
     catalog("photo-1678705730064-a7ecbab4b3fb", "sarees", "#7e1b1c", "A cream and red saree with a jasmine garland"),
     catalog("photo-1777888766898-084641327f1a", "kurtis", "#e6dccf", "A printed kurta under blossoms"),
     catalog("photo-1721324807083-e9ddaa99310e", "festive", "#2c3a2e", "A bride in a red and gold lehenga"),
-    catalog("photo-1768478701507-24b1c8de2df0", "pants", "#d8cfc1", "A patterned tunic with wide-leg pants"),
+    catalog("photo-1773439878281-5aa23c34dcaa", "scarves", "#3a2b21", "An embroidered black dupatta over a grey kurta set"),
   ],
 ];

@@ -8,7 +8,7 @@ import type { HeroData, ImgProps } from "./types";
 const STORY_COPY: Record<string, string> = {
   sarees: "Banarasi silk, Chanderi and handloom cotton, finished by hand to be handed down.",
   kurtis: "Chikankari, block print and fluid silk, cut in clean lines for every day.",
-  pants: "Wide-leg linen, pleated palazzos and slim trousers. The pieces everything else is built on.",
+  scarves: "Mulmul dupattas, zari silk stoles and printed silk scarves, finished by hand."
 };
 
 const CATEGORY_PHOTOS = editorial.categories as Record<string, EditorialImage | undefined>;

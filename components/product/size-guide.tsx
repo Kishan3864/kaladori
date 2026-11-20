@@ -28,8 +28,6 @@ const HOW_TO = [
 const FIT_NOTES: Partial<Record<Category, string>> = {
   kurtis:
     "Our kurtis are cut with gentle ease through the body. If you are between sizes, take the smaller for a closer line or the larger for a relaxed drape.",
-  pants:
-    "Our trousers sit at the natural waist. Choose by your waist measurement; inside-leg lengths are listed in each product's details.",
 };
 
 type SizeGuideProps = {

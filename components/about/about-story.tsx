@@ -25,7 +25,7 @@ const steps = [
   {
     number: "03",
     title: "Hand finishing",
-    body: "Kurtis and pants are cut in small runs in our Lucknow workshop and finished by hand: chikankari worked stitch by stitch, hems turned and blind-stitched, buttons sewn on with a shank so they sit properly. Every saree is checked inch by inch before it is folded in muslin.",
+    body: "Kurtis are cut in small runs in our Lucknow workshop and finished by hand: chikankari worked stitch by stitch, hems turned and blind-stitched, buttons sewn on with a shank so they sit properly. Every saree is checked inch by inch before it is folded in muslin.",
     note: "Chikankari · Block print · Hand-rolled hems",
   },
   {
@@ -100,7 +100,7 @@ export function AboutStory() {
             <p className="text-lede text-ink/85">
               KalaDori began with a handful of sarees and a simple question: what if we made less, and made it
               properly? Today we work with a small circle of weaving families and artisans, designing sarees,
-              kurtis and tailored pants in quiet colours and clean lines — clothes made to be worn often, loved
+              kurtis and scarves in quiet colours and clean lines — clothes made to be worn often, loved
               hard and passed on.
             </p>
             <p className="mt-6 text-[15px] leading-relaxed text-stone">

@@ -14,22 +14,81 @@ import { readDocument, updateDocument } from "@/lib/server/store";
 export const CATALOG_TAG = "catalog";
 const FILE = "catalog.json";
 
-const seed = (): Catalog => ({
+/** The stored document: the catalogue plus the data migrations already applied to it. */
+type CatalogDoc = Catalog & { migrations?: string[] };
+
+/* -------------------------------------------------------------- migrations
+   One-time changes to a catalogue that was already saved on the server (the
+   seed only applies before the first admin edit). Each runs once: its id is
+   recorded in the document. Applied on every read and before every write.
+------------------------------------------------------------------------- */
+
+const MIGRATIONS: { id: string; run: (doc: CatalogDoc) => CatalogDoc }[] = [
+  {
+    // 2026-11-20: the house stopped selling pants; scarves take their place.
+    id: "2026-11-scarves-replace-pants",
+    run: (doc) => {
+      const categories = doc.categories.filter((c) => c.slug !== "pants");
+      const scarves = SEED_CATEGORIES.find((c) => c.slug === "scarves");
+      if (scarves && !categories.some((c) => c.slug === "scarves")) categories.push(structuredClone(scarves));
+      const products = doc.products.filter((p) => p.category !== "pants");
+      for (const piece of SEED_PRODUCTS.filter((p) => p.category === "scarves")) {
+        if (!products.some((p) => p.slug === piece.slug)) products.push(structuredClone(piece));
+      }
+      // Copy that pointed shoppers to the trousers being removed.
+      const tidied = products.map((p) =>
+        p.slug === "reti-linen-tunic-kurti"
+          ? {
+              ...p,
+              summary: p.summary.replace(", cut short for trousers.", ", cut to hip length."),
+              description: p.description.replace(
+                "Wear it with the Wide-Leg Linen Trouser for an easy tonal look.",
+                "Wear it with a mulmul dupatta for an easy tonal look.",
+              ),
+              details: p.details.filter((d) => !/trouser/i.test(d)),
+            }
+          : p,
+      );
+      return { ...doc, categories, products: tidied };
+    },
+  },
+];
+
+function migrate(doc: CatalogDoc): CatalogDoc {
+  const done = new Set(doc.migrations ?? []);
+  let next = doc;
+  for (const m of MIGRATIONS) {
+    if (done.has(m.id)) continue;
+    next = { ...m.run(next), migrations: [...(next.migrations ?? []), m.id] };
+  }
+  return next;
+}
+
+const seed = (): CatalogDoc => ({
   categories: structuredClone(SEED_CATEGORIES),
   products: structuredClone(SEED_PRODUCTS),
+  migrations: MIGRATIONS.map((m) => m.id),
 });
+
+/** Read the stored catalogue with any pending migrations applied. */
+const readCatalog = () => readDocument<CatalogDoc>(FILE, seed).then(migrate);
+
+/** Read-modify-write, with pending migrations applied first (and so persisted). */
+function updateCatalog<R>(mutate: (doc: CatalogDoc) => { doc: CatalogDoc; result: R }) {
+  return updateDocument<CatalogDoc, R>(FILE, seed, (doc) => mutate(migrate(doc)));
+}
 
 /** The shop's catalogue: published products only. Cached until an admin edit. */
 export async function getCatalog(): Promise<Catalog> {
   "use cache";
   cacheTag(CATALOG_TAG);
-  const doc = await readDocument(FILE, seed);
+  const doc = await readCatalog();
   return { categories: doc.categories, products: doc.products.filter(isPublished) };
 }
 
 /** Everything, including hidden products (admin only, never cached). */
 export function getAdminCatalog(): Promise<Catalog> {
-  return readDocument(FILE, seed);
+  return readCatalog();
 }
 
 /* ------------------------------------------------------------- products */
@@ -38,7 +97,7 @@ export type SaveResult = { ok: true; slug: string } | { ok: false; message: stri
 
 /** Create (no originalSlug) or update a product. */
 export function saveProduct(product: Product, originalSlug?: string): Promise<SaveResult> {
-  return updateDocument<Catalog, SaveResult>(FILE, seed, (doc) => {
+  return updateCatalog<SaveResult>((doc) => {
     if (!doc.categories.some((c) => c.slug === product.category)) {
       return { doc, result: { ok: false, message: "Please choose a category that exists." } };
     }
@@ -57,7 +116,7 @@ export function saveProduct(product: Product, originalSlug?: string): Promise<Sa
 }
 
 export function deleteProduct(slug: string): Promise<boolean> {
-  return updateDocument<Catalog, boolean>(FILE, seed, (doc) => {
+  return updateCatalog<boolean>((doc) => {
     const products = doc.products.filter((p) => p.slug !== slug);
     return { doc: { ...doc, products }, result: products.length !== doc.products.length };
   });
@@ -65,7 +124,7 @@ export function deleteProduct(slug: string): Promise<boolean> {
 
 /** Move a product one place up (-1) or down (+1) in the shop's featured order. */
 export function moveProduct(slug: string, dir: -1 | 1): Promise<void> {
-  return updateDocument<Catalog, void>(FILE, seed, (doc) => {
+  return updateCatalog<void>((doc) => {
     const products = [...doc.products];
     const at = products.findIndex((p) => p.slug === slug);
     const to = at + dir;
@@ -78,7 +137,7 @@ export function moveProduct(slug: string, dir: -1 | 1): Promise<void> {
 /* ----------------------------------------------------------- categories */
 
 export function saveCategory(category: CategoryInfo, originalSlug?: string): Promise<SaveResult> {
-  return updateDocument<Catalog, SaveResult>(FILE, seed, (doc) => {
+  return updateCatalog<SaveResult>((doc) => {
     const clash = doc.categories.find((c) => c.slug === category.slug && c.slug !== originalSlug);
     if (clash) {
       return { doc, result: { ok: false, message: `A category with the link "${category.slug}" already exists.` } };
@@ -97,7 +156,7 @@ export function saveCategory(category: CategoryInfo, originalSlug?: string): Pro
     } else {
       categories.push(category);
     }
-    return { doc: { categories, products }, result: { ok: true, slug: category.slug } };
+    return { doc: { ...doc, categories, products }, result: { ok: true, slug: category.slug } };
   });
 }
 
@@ -105,7 +164,7 @@ export type DeleteCategoryResult = { ok: true } | { ok: false; message: string }
 
 /** Only empty categories can be deleted, so no product is ever left without one. */
 export function deleteCategory(slug: string): Promise<DeleteCategoryResult> {
-  return updateDocument<Catalog, DeleteCategoryResult>(FILE, seed, (doc) => {
+  return updateCatalog<DeleteCategoryResult>((doc) => {
     const used = doc.products.filter((p) => p.category === slug).length;
     if (used > 0) {
       return {
@@ -119,7 +178,7 @@ export function deleteCategory(slug: string): Promise<DeleteCategoryResult> {
 
 /** Move a category one place up (-1) or down (+1) (menu and filter order). */
 export function moveCategory(slug: string, dir: -1 | 1): Promise<void> {
-  return updateDocument<Catalog, void>(FILE, seed, (doc) => {
+  return updateCatalog<void>((doc) => {
     const categories = [...doc.categories];
     const at = categories.findIndex((c) => c.slug === slug);
     const to = at + dir;

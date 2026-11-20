@@ -198,7 +198,7 @@ function Opening({ data }: { data: HeroData }) {
           </h1>
           <div className="hero-fade" style={{ animationDelay: "0.55s" }}>
             <p className="mt-4 max-w-[28rem] text-[15px] font-light leading-relaxed text-ivory/80 md:mt-6 md:text-[17px]">
-              Handwoven sarees, kurtis and tailored pants, made in small runs by India&rsquo;s master weavers.
+              Handwoven sarees, kurtis and scarves, made in small runs by India&rsquo;s master weavers.
             </p>
             <HeroActions className="mt-7" />
           </div>

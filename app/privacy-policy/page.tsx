@@ -22,7 +22,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          {site.name} is a handloom label based in {site.city}, making handwoven sarees, kurtis and pants. The business is
+          {site.name} is a handloom label based in {site.city}, making handwoven sarees, kurtis and scarves. The business is
           owned and run by its founder and proprietor, {site.owner}. In this policy, “KalaDori”, “we”, “us” and “our”
           refer to {site.name}.
         </p>

@@ -1,5 +1,6 @@
 import { BrandPromises } from "@/components/home/brand-promises";
 import { CraftStatement } from "@/components/home/craft-statement";
+import { HowToOrder } from "@/components/home/how-to-order";
 import { NewArrivals } from "@/components/home/new-arrivals";
 import { Newsletter } from "@/components/home/newsletter";
 
@@ -7,7 +8,8 @@ import { Newsletter } from "@/components/home/newsletter";
 export function HomeSections() {
   return (
     <>
-      <BrandPromises className="pt-16 md:pt-24" />
+      <HowToOrder />
+      <BrandPromises className="pt-12 md:pt-16" />
       <NewArrivals />
       <CraftStatement />
       <Newsletter />

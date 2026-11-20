@@ -35,7 +35,7 @@ export function Footer({ shop = navigation.primary }: { shop?: readonly NavLink[
           <div className="lg:col-span-4">
             <Logo layout="horizontal" className="w-[200px]" />
             <p className="mt-6 max-w-xs text-[15px] leading-relaxed text-stone">
-              Handwoven sarees, kurtis and pants. Order on WhatsApp, pay by UPI.
+              Handwoven sarees, kurtis and scarves. Order on WhatsApp, pay by UPI.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
               <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ink min-h-11 px-6">

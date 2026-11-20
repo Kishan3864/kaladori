@@ -4,7 +4,7 @@ import { ACTIVE_HERO, HomeHero } from "@/components/home/heroes/registry";
 import { HomeSections } from "@/components/home/home-sections";
 import { site } from "@/lib/site";
 
-const title = "KalaDori Textile — Handwoven Sarees, Kurtis & Pants";
+const title = "KalaDori Textile — Handwoven Sarees, Kurtis & Scarves";
 
 export const metadata: Metadata = {
   title: { absolute: title },

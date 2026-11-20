@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 
 const title = "About";
 const description =
-  "The story of KalaDori Textile: a small Indian house making handwoven sarees, chikankari kurtis and tailored pants with artisan families in Varanasi, Chanderi, Lucknow, Bagru and Phulia — in small batches, at fair wages, made to be mended.";
+  "The story of KalaDori Textile: a small Indian house making handwoven sarees, chikankari kurtis and scarves with artisan families in Varanasi, Chanderi, Lucknow, Bagru and Phulia — in small batches, at fair wages, made to be mended.";
 
 export const metadata: Metadata = {
   title,

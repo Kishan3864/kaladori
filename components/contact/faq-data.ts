@@ -76,7 +76,7 @@ export const faqs: FaqItem[] = [
     id: "sizing",
     question: "How do I find my size?",
     answer: [
-      "Kurtis and pants are cut in sizes XS to XXL, with an easy, unfussy fit through the body. Our model is 5′8″ (173 cm) and wears a size S. Sarees are one size and come with an unstitched blouse piece.",
+      "Kurtis are cut in sizes XS to XXL, with an easy, unfussy fit through the body. Our model is 5′8″ (173 cm) and wears a size S. Sarees are one size and come with an unstitched blouse piece.",
       "Between sizes, or unsure how a piece will fall? Send us your measurements and the piece you have in mind on WhatsApp or through the form above, and we will advise you before you order.",
     ],
   },

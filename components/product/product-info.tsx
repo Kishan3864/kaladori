@@ -319,6 +319,7 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
               ) : null}
             </div>
 
+            <div className={cn("rounded-[4px] transition-shadow", error && "next-step-pulse")}>
             <SizeSelector
               sizes={product.sizes}
               value={size}
@@ -328,13 +329,14 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
               invalid={error}
               groupRef={groupRef}
             />
+            </div>
 
             <p
               id={errorId}
               aria-live="polite"
               className={cn("text-[13px] text-maroon", single ? "mt-3 empty:hidden" : "mt-2 min-h-5")}
             >
-              {error ? "Please select a size" : ""}
+              {error ? "Please choose your size first" : ""}
             </p>
             {single ? (
               <p className="text-[13px] leading-relaxed text-stone">
@@ -343,8 +345,27 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
             ) : null}
           </div>
 
-          {/* Quantity + Add to bag */}
-          <div ref={buyRowRef} className="mt-5 flex gap-2">
+          {/* Order on WhatsApp: the recommended way (message prefilled with every detail) */}
+          <a
+            href={whatsappLink(productEnquiryText(product, size ?? undefined, qty))}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => {
+              if (!size) {
+                event.preventDefault();
+                setError(true);
+                focusSizes();
+              }
+            }}
+            className={cn("btn btn-whatsapp mt-5 w-full justify-between! px-5! sm:px-7!", size && "next-step-pulse-wa")}
+          >
+            <span className="flex items-center gap-2.5">
+              <WhatsAppGlyph size={17} />
+              Order on WhatsApp
+            </span>
+            <span className="rounded-full bg-ivory/20 px-2.5 py-1 text-[9.5px] tracking-[0.16em]">Recommended</span>
+          </a>
+          <div ref={buyRowRef} className="mt-2.5 flex gap-2">
             <QuantityStepper value={qty} max={Math.max(1, available)} onChange={setQuantity} />
             <button
               type="button"
@@ -352,8 +373,8 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
               aria-disabled={atLimit || undefined}
               aria-describedby={atLimit ? limitId : undefined}
               className={cn(
-                "btn btn-ink min-w-0 flex-1 justify-between! gap-3 px-5! sm:px-7!",
-                added && "border-maroon! bg-maroon!",
+                "btn btn-outline min-w-0 flex-1 justify-between! gap-3 px-5! sm:px-7!",
+                added && "border-maroon! bg-maroon! text-ivory!",
                 atLimit && !added && "cursor-not-allowed opacity-45 hover:border-ink! hover:bg-ink!",
               )}
             >
@@ -399,16 +420,8 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
             {added && size ? `${product.name}, ${size}, added to your bag.` : ""}
           </p>
 
-          {/* Order on WhatsApp (size included once chosen) */}
-          <a
-            href={whatsappLink(productEnquiryText(product, single ? undefined : (size ?? undefined)))}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline mt-3 w-full px-5!"
-          >
-            <WhatsAppGlyph size={16} />
-            Order on WhatsApp
-          </a>
+
+          <NextStep step={size ? 2 : 1} />
           <p className="mt-2.5 text-center text-[12.5px] leading-relaxed text-stone">
             Questions on fit or fabric? We reply on WhatsApp, {site.hours.replace(" IST", "")}.
           </p>
@@ -463,19 +476,80 @@ export function ProductInfo({ product, categoryName }: ProductInfoProps) {
                 type="button"
                 onClick={handleAdd}
                 aria-disabled={atLimit || undefined}
+                aria-label={added ? "Added to bag" : "Add to bag"}
                 className={cn(
-                  "btn btn-ink shrink-0",
-                  added && "border-maroon! bg-maroon!",
-                  atLimit && !added && "cursor-not-allowed opacity-45 hover:border-ink! hover:bg-ink!",
+                  "flex h-[3.25rem] w-12 shrink-0 items-center justify-center border border-ink text-ink",
+                  added && "border-maroon bg-maroon text-ivory",
                 )}
               >
-                {added ? "Added" : atLimit ? "In your bag" : size ? "Add to bag" : "Select size"}
+                {added ? "✓" : "+"}
               </button>
+              <a
+                href={whatsappLink(productEnquiryText(product, size ?? undefined, qty))}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(event) => {
+                  if (!size) {
+                    event.preventDefault();
+                    setError(true);
+                    focusSizes();
+                  }
+                }}
+                className="btn btn-whatsapp shrink-0 gap-2 px-4!"
+              >
+                <WhatsAppGlyph size={15} />
+                {size ? "Order" : "Choose size"}
+              </a>
             </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
     </>
+  );
+}
+
+/**
+ * Where the shopper is in ordering, and what to do next. The current step is
+ * highlighted; done steps are ticked.
+ */
+function NextStep({ step }: { step: 1 | 2 }) {
+  const steps = ["Choose size", "Order on WhatsApp", "Pay by UPI"];
+  const hint =
+    step === 1
+      ? "Next: choose your size above."
+      : "Next: tap Order on WhatsApp. Your order message is ready with every detail, just press send.";
+  return (
+    <div className="mt-5 border border-line bg-sand/40 p-3.5">
+      <ol className="flex items-center gap-1.5 text-[11.5px]" aria-label="How to order">
+        {steps.map((label, i) => {
+          const n = i + 1;
+          const done = n < step;
+          const current = n === step;
+          return (
+            <li key={label} className="flex min-w-0 flex-1 items-center gap-1.5">
+              <span
+                className={cn(
+                  "flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px]",
+                  done && "bg-ink text-ivory",
+                  current && "bg-maroon text-ivory ring-4 ring-maroon/15",
+                  !done && !current && "border border-ink/25 text-stone",
+                )}
+                aria-hidden="true"
+              >
+                {done ? "✓" : n}
+              </span>
+              <span className={cn("leading-tight", current ? "font-medium text-ink" : "text-stone")}>
+                {label}
+                {current ? <span className="sr-only"> (current step)</span> : null}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-2.5 text-[13px] leading-relaxed text-ink/80" aria-live="polite">
+        {hint}
+      </p>
+    </div>
   );
 }
 

@@ -51,7 +51,7 @@ export function AboutHero() {
             ))}
           </dl>
           <p className="mt-8 text-[15px] leading-relaxed text-ink/80">
-            KalaDori is a small Indian house making sarees, kurtis and tailored pants with weaving families in
+            KalaDori is a small Indian house making sarees, kurtis and scarves with weaving families in
             Varanasi, Chanderi and Phulia, block printers in Bagru and embroiderers in Lucknow.
           </p>
         </Reveal>

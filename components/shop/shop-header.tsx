@@ -7,7 +7,7 @@ export function ShopHeader() {
       <Reveal y={12}>
         <h1 className="text-display">The collection</h1>
         <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-stone">
-          Handloom sarees, hand-finished kurtis and tailored pants in natural fibres, made in small runs.
+          Handloom sarees, hand-finished kurtis and scarves in natural fibres, made in small runs.
         </p>
       </Reveal>
     </section>

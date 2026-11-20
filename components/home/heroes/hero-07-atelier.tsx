@@ -36,7 +36,7 @@ export function HeroAtelier({ data }: { data: HeroData }) {
 /* ================================================================ opening */
 
 function Opening({ data }: { data: HeroData }) {
-  // Five looks across the collections (sarees, kurtis, festive, pants, co-ords).
+  // Five looks across the collections (sarees, kurtis, festive, scarves, co-ords).
   const looks = [0, 1, 2, 3, 5].map((i) => data.catalog.deck[i]).filter(Boolean);
   const reduced = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
@@ -178,7 +178,7 @@ function EditorialGrid({ data }: { data: HeroData }) {
   const tiles = [
     { photo: big, title: "Festive & bridal", line: "Lehengas, silk and gold for the big days.", href: "/shop", className: "md:row-span-2" },
     { photo: a, title: "Silk sarees", line: "Banarasi and Chanderi, woven by hand.", href: "/shop?category=sarees", className: "" },
-    { photo: b, title: "Co-ord sets", line: "Printed kurtas and easy pants, ready to wear.", href: "/shop?category=kurtis", className: "" },
+    { photo: b, title: "Co-ord sets", line: "Printed kurta sets, ready to wear.", href: "/shop?category=kurtis", className: "" },
   ];
 
   return (

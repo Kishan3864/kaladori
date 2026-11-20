@@ -198,7 +198,7 @@ function HeroCopy() {
 
       <div className="hero-fade flex flex-col items-center" style={{ animationDelay: "0.55s" }}>
         <p className="max-w-[26rem] text-[15px] font-light leading-relaxed text-ivory/80 [text-shadow:0_1px_16px_rgb(0_0_0/0.5)] md:text-base">
-          Handwoven sarees, kurtis and tailored pants, made in small runs by India&rsquo;s master weavers.
+          Handwoven sarees, kurtis and scarves, made in small runs by India&rsquo;s master weavers.
         </p>
         <HeroActions className="mt-6 justify-center" />
       </div>

@@ -13,7 +13,7 @@ import { site } from "@/lib/site";
 const title = "Shop";
 const socialTitle = "Shop the collection — KalaDori Textile";
 const description =
-  "Shop handwoven Banarasi and Chanderi sarees, chikankari and block-printed kurtis, and tailored linen and silk pants — made in small runs with artisans across India.";
+  "Shop handwoven Banarasi and Chanderi sarees, chikankari and block-printed kurtis, and handwoven dupattas, stoles and silk scarves, made in small runs with artisans across India.";
 const socialImage = {
   url: editorial.categories.sarees.src,
   alt: editorial.categories.sarees.alt,

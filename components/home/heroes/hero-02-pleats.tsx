@@ -214,7 +214,7 @@ function HeroCopy() {
       </h1>
       <div className="hero-fade" style={{ animationDelay: "0.55s" }}>
         <p className="mt-4 max-w-[26rem] text-[15px] font-light leading-relaxed text-ivory/85 md:mt-5 md:text-base">
-          Handwoven sarees, kurtis and tailored pants, made in small runs by India&rsquo;s master weavers.
+          Handwoven sarees, kurtis and scarves, made in small runs by India&rsquo;s master weavers.
         </p>
         <HeroActions className="mt-6 md:mt-8" />
       </div>
