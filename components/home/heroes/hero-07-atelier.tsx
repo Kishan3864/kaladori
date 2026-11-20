@@ -20,6 +20,7 @@ import { usePrefersReducedMotion } from "@/lib/hooks";
 import type { CatalogPhoto } from "@/lib/images";
 import { cn, formatPrice } from "@/lib/utils";
 import { LABEL } from "./hero-05-poster-deck";
+import { MobileCarousel } from "./mobile-carousel";
 import type { HeroData } from "./types";
 
 const CYCLE_MS = 4000;
@@ -39,7 +40,8 @@ function Opening({ data }: { data: HeroData }) {
   // Five looks across the collections (sarees, kurtis, festive, scarves, co-ords).
   const looks = [0, 1, 2, 3, 5].map((i) => data.catalog.deck[i]).filter(Boolean);
   const reduced = usePrefersReducedMotion();
-  const [active, setActive] = useState(0);
+  // The middle look opens first.
+  const [active, setActive] = useState(Math.floor(looks.length / 2));
   const [held, setHeld] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
   const ref = useRef<HTMLElement>(null);
@@ -93,10 +95,13 @@ function Opening({ data }: { data: HeroData }) {
         </div>
       </div>
 
-      {/* The accordion of looks */}
-      <div className="mt-10 px-3 md:mt-14 md:px-6 xl:px-10">
+      {/* Phones: a swipeable carousel, the middle look first */}
+      <MobileCarousel looks={looks} fromPrice={data.catalog.fromPrice} />
+
+      {/* Tablet and desktop: the accordion of looks */}
+      <div className="mt-14 hidden px-6 md:block xl:px-10">
         <ul
-          className="hero-fade mx-auto flex h-[min(52svh,34rem)] max-w-[1600px] gap-1.5 md:h-[min(62svh,40rem)] md:gap-2.5"
+          className="hero-fade mx-auto flex h-[min(62svh,40rem)] max-w-[1600px] gap-2.5"
           style={{ animationDelay: "0.7s" }}
           onMouseLeave={() => setHeld(false)}
         >
@@ -138,7 +143,19 @@ function Panel({
       className={cn("atelier-panel relative min-w-0 overflow-hidden rounded-[6px] bg-sand", open && "is-open")}
       onMouseEnter={onActivate}
     >
-      <Link href={href} onFocus={onActivate} className="group absolute inset-0 block" aria-label={`${LABEL[look.category]}, shop now`}>
+      <Link
+        href={href}
+        onFocus={onActivate}
+        onClick={(event) => {
+          // Touch screens: the first tap opens a closed panel; only the open one navigates.
+          if (!open) {
+            event.preventDefault();
+            onActivate();
+          }
+        }}
+        className="group absolute inset-0 block"
+        aria-label={`${LABEL[look.category]}, shop now`}
+      >
         <Image
           src={look.src}
           alt={look.alt}
