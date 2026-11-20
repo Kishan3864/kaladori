@@ -3,27 +3,29 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * KalaDori lotus logo (pack in /public/brand/svg, rendered as supplied, never redrawn).
+ * kaladori needle-and-thread logo (Kaladori-Logo-Kit, copied into
+ * /public/brand; rendered as supplied, never redrawn or recoloured).
  *
- * Layouts (viewBox sizes from the pack):
- * - "header": lotus + KALA DORI (bold wordmark), for the site header (660 × 158)
- * - "horizontal": with the "Stitched like art" tagline (660 × 166)
- * - "stacked": lotus above the name and tagline (486 × 327)
+ * Layouts (viewBox sizes from the kit):
+ * - "horizontal": needle + kaladori + thread underline (910 × 252). Header, footer.
+ *   Kit minimum: 140px wide.
+ * - "stacked": needle above the name (794 × 520). Square spaces.
+ * - "icon": the needle mark alone (157 × 248). Small spaces.
  *
- * Tones: "color" for ivory / light grounds, "dark" for very dark grounds,
- * "maroon" for maroon grounds, and "auto" (header only) renders color + dark
- * and lets CSS pick, so the header can sit over the dark home hero.
+ * Tones: "color" (black + maroon) for light backgrounds, "reverse" (cream +
+ * blush) for dark ones, and "auto" (header) which renders both and lets CSS
+ * pick, so the header can sit over the dark home hero.
  */
 const LAYOUTS = {
-  header: { file: "logo-header", width: 660, height: 158 },
-  horizontal: { file: "logo-horizontal", width: 660, height: 166 },
-  stacked: { file: "logo-stacked", width: 486, height: 327 },
+  horizontal: { file: "kaladori-horizontal", width: 910, height: 252 },
+  stacked: { file: "kaladori-stacked", width: 794, height: 520 },
+  icon: { file: "kaladori-icon", width: 157, height: 248 },
 } as const;
 
-type Tone = "color" | "dark" | "maroon" | "white" | "black";
+type Tone = "color" | "reverse";
 
 export function Logo({
-  layout = "header",
+  layout = "horizontal",
   tone = "color",
   className,
   priority = false,
@@ -42,8 +44,8 @@ export function Logo({
 
   const render = (t: Tone, extra?: string, decorative = false) => (
     <Image
-      src={`/brand/svg/${file}-${t}.svg`}
-      alt={decorative ? "" : "KalaDori Textile"}
+      src={`/brand/${file}-${t}.svg`}
+      alt={decorative ? "" : "kaladori"}
       width={width}
       height={height}
       loading={priority ? "eager" : undefined}
@@ -57,7 +59,7 @@ export function Logo({
     tone === "auto" ? (
       <>
         {render("color", "logo-on-light")}
-        {render("dark", "logo-on-dark", true)}
+        {render("reverse", "logo-on-dark", true)}
       </>
     ) : (
       render(tone)
@@ -68,7 +70,7 @@ export function Logo({
   return (
     <Link
       href={href}
-      aria-label="KalaDori Textile, home"
+      aria-label="kaladori, home"
       onClick={onClick}
       className={cn("block transition-opacity duration-500 ease-editorial hover:opacity-80", className)}
     >

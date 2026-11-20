@@ -37,7 +37,7 @@ const DWELL_MS = 4800;
 /** Posters drawn behind the top one. */
 const DEPTH = 3;
 
-const LABEL: Record<CatalogPhoto["category"], string> = {
+export const LABEL: Record<CatalogPhoto["category"], string> = {
   sarees: "Sarees",
   kurtis: "Kurtis",
   pants: "Pants",
@@ -390,7 +390,7 @@ function PosterCard({
 
 /* ============================================================== poster wall */
 
-function PosterWall({ rows }: { rows: CatalogPhoto[][] }) {
+export function PosterWall({ rows }: { rows: CatalogPhoto[][] }) {
   return (
     <section aria-labelledby="wall-title" className="relative overflow-hidden bg-[#140d0f] py-16 text-ivory md:py-24">
       <div className="shell flex items-end justify-between gap-6">

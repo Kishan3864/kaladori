@@ -63,22 +63,14 @@ export const metadata: Metadata = {
     title: "KalaDori Textile — Handwoven Sarees, Kurtis & Pants",
     description: site.description,
   },
-  // Lotus logo pack (public/brand). SVG first for modern browsers, ICO and PNG for the rest.
-  icons: {
-    icon: [
-      { url: "/brand/favicon/favicon.svg", type: "image/svg+xml" },
-      { url: "/brand/favicon/favicon.ico", sizes: "48x48" },
-      { url: "/brand/favicon/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/brand/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [{ url: "/brand/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-  },
+  // Favicon, icon.svg and apple-icon.png live in /app (Kaladori-Logo-Kit/06-website):
+  // Next.js writes their <link> tags itself.
   robots: { index: true, follow: true },
   formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F6F1EA",
+  themeColor: "#F8F5EE",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,

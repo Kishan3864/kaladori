@@ -12,14 +12,13 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     lang: "en-IN",
     dir: "ltr",
-    background_color: "#F6F1EA",
-    theme_color: "#A2284E",
+    background_color: "#F8F5EE",
+    theme_color: "#9A2D4C",
     categories: ["shopping", "lifestyle"],
     icons: [
-      { src: "/brand/favicon/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-      { src: "/brand/favicon/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/brand/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { src: "/brand/favicon/favicon.svg", sizes: "any", type: "image/svg+xml" },
+      { src: "/brand/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/brand/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
     ],
   };
 }

@@ -2,24 +2,25 @@
 
 /* ------------------------------------------------------------------
    KalaDori Textile — design tokens
-   ink #1A1A1A · maroon #A2284E · ivory #F6F1EA · sand #E9DFD3 · blush #DE7B9C
+   ink #1A1A1A · maroon #9A2D4C · ivory (cream) #F8F5EE · sand #EEE8DE · blush #F2B8C6
 ------------------------------------------------------------------- */
 
 @theme {
   --color-ink: #1a1a1a;
   --color-ink-soft: #2b2725;
-  --color-maroon: #a2284e;
-  --color-maroon-deep: #841f3f;
-  --color-ivory: #f6f1ea;
-  --color-sand: #e9dfd3;
-  --color-sand-deep: #dccfbf;
-  --color-blush: #de7b9c;
-  /* Lotus logo pack accents. */
+  /* Kaladori-Logo-Kit: Needle Black #1A1A1A, Thread Maroon #9A2D4C, Cream #F8F5EE, Blush #F2B8C6 */
+  --color-maroon: #9a2d4c;
+  --color-maroon-deep: #7d2240;
+  --color-ivory: #f8f5ee;
+  --color-sand: #eee8de;
+  --color-sand-deep: #e2d9cb;
+  --color-blush: #f2b8c6;
+  /* Accents: gold (archived heroes), rose = the kit's blush. */
   --color-gold: #c6a15b;
-  --color-rose: #e7a2b8;
+  --color-rose: #f2b8c6;
   --color-stone: #6b625b;
   --color-line: rgb(26 26 26 / 0.12);
-  --color-line-light: rgb(246 241 234 / 0.16);
+  --color-line-light: rgb(248 245 238 / 0.16);
 
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-silk: cubic-bezier(0.65, 0, 0.35, 1);
@@ -622,7 +623,7 @@
 /* Hero 05 "Poster Deck" */
 .poster-outline {
   color: transparent;
-  -webkit-text-stroke: 1px rgb(246 241 234 / 0.26);
+  -webkit-text-stroke: 1px rgb(248 245 238 / 0.26);
 }
 
 @keyframes poster-progress {
@@ -678,6 +679,59 @@
   }
 }
 
+/* Hero 06 "Needle & Thread": the arch frame, its slides, and the stitched threads. */
+.needle-arch {
+  /* Matches the ARCH path: a semicircle over a straight-sided frame. */
+  border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+}
+
+.arch-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.12);
+  transition:
+    opacity 1.2s var(--ease-editorial),
+    transform 0s linear 1.2s;
+}
+
+.arch-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 1.2s var(--ease-editorial),
+    transform 6s linear;
+}
+
+@keyframes arch-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.arch-thread {
+  animation: arch-draw 3.4s cubic-bezier(0.45, 0, 0.25, 1) 0.5s forwards;
+}
+
+.loose-thread {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arch-draw 3.2s var(--ease-editorial) 0.2s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch-thread,
+  .loose-thread {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .arch-slide,
+  .arch-slide.is-active {
+    transition: none !important;
+    transform: none;
+  }
+}
+
 /* Header over the dark home hero: transparent, ivory type, light logo.
    Applies while the page has the hero story and it has not scrolled away
    (the story sets data-hero-past on <html>), never with the menu open. */
@@ -697,7 +751,7 @@ html:has(#home-story):not([data-hero-past]):not([data-hero-off]) #site-header:no
     background-color: var(--color-ivory);
   }
   & .hdr-badge {
-    background-color: rgb(246 241 234 / 0.16);
+    background-color: rgb(248 245 238 / 0.16);
     color: var(--color-ivory);
   }
   & .logo-on-light {
@@ -712,7 +766,7 @@ html:has(#home-story):not([data-hero-past]):not([data-hero-off]) #site-header:no
    gets a dark glass ground (ivory type and light logo stay readable). */
 html:has(#home-story):not([data-hero-past]):not([data-hero-off]) #site-header[data-scrolled]:not([data-menu-open]) {
   background-color: rgb(16 10 12 / 0.72);
-  border-color: rgb(246 241 234 / 0.08);
+  border-color: rgb(248 245 238 / 0.08);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
 }

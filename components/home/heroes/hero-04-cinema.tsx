@@ -6,7 +6,7 @@
  * Part 1, the opening: the background plays like a brand film. The three
  * collection photographs cross-fade on a loop, each with a slow cinematic
  * push-in and pan (pure CSS, so it runs before hydration and cannot fail).
- * The bold lotus logo arrives in the centre; a player bar at the foot shows
+ * The stacked kaladori logo arrives in the centre; a player bar at the foot shows
  * which collection is on screen, its line filling while that shot plays.
  * Scrolling away, the whole opening recedes like a card tipping back in 3D.
  *
@@ -108,10 +108,10 @@ function Opening({ collections }: { collections: StoryCollection[] }) {
             <h1 className="cinema-logo w-[min(78vw,30rem)]">
               <span className="sr-only">KalaDori, stitched like art</span>
               <Image
-                src="/brand/svg/logo-stacked-dark.svg"
+                src="/brand/kaladori-stacked-reverse.svg"
                 alt=""
-                width={486}
-                height={327}
+                width={794}
+                height={520}
                 priority
                 unoptimized
                 className="h-auto w-full drop-shadow-[0_6px_40px_rgb(0_0_0/0.5)]"

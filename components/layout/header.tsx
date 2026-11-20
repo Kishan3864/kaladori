@@ -88,7 +88,7 @@ export function Header({ primary = navigation.primary }: { primary?: readonly Na
       >
         <div className="shell flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
           {/* Logo (kept at 140px+ so "TEXTILE" stays legible) */}
-          <Logo tone="auto" priority className="w-[150px] min-[360px]:w-[176px] md:w-[210px]" onClick={closeMenu} />
+          <Logo tone="auto" priority className="w-[140px] min-[360px]:w-[150px] md:w-[172px]" onClick={closeMenu} />
 
           {/* Desktop navigation, one line */}
           <nav aria-label="Primary" className="hidden lg:block">

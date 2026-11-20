@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title,
     description: site.description,
-    // Brand card from the lotus pack (app/opengraph-image.png) for link previews.
+    // Brand card from Kaladori-Logo-Kit (app/opengraph-image.png) for link previews.
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ const jsonLd = {
       url: site.url,
       logo: {
         "@type": "ImageObject",
-        url: `${site.url}/brand/favicon/icon-512.png`,
+        url: `${site.url}/brand/icon-512.png`,
         width: 512,
         height: 512,
       },
