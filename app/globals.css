@@ -732,6 +732,28 @@
   }
 }
 
+/* Hero 07 "Atelier": five looks in an accordion; the open one widens. */
+.atelier-panel {
+  flex: 1 1 0;
+  transition: flex-grow 0.9s var(--ease-editorial);
+}
+
+.atelier-panel.is-open {
+  flex-grow: 6;
+}
+
+.atelier-label,
+.atelier-shade {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-editorial);
+}
+
+.atelier-panel.is-open .atelier-label,
+.atelier-panel.is-open .atelier-shade {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+
 /* Header over the dark home hero: transparent, ivory type, light logo.
    Applies while the page has the hero story and it has not scrolled away
    (the story sets data-hero-past on <html>), never with the menu open. */

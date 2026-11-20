@@ -4,6 +4,7 @@ import { HeroGalleryFlight } from "./hero-03-gallery-flight";
 import { HeroCinema } from "./hero-04-cinema";
 import { HeroPosterDeck } from "./hero-05-poster-deck";
 import { HeroNeedleThread } from "./hero-06-needle-thread";
+import { HeroAtelier } from "./hero-07-atelier";
 import type { HeroData } from "./types";
 
 /**
@@ -44,12 +45,17 @@ export const HERO_VARIANTS = {
     summary: "Catalog photos play in an arch frame that the logo's needle stitches with a blush thread; collection cards; poster wall below.",
     Component: HeroNeedleThread,
   },
+  "07": {
+    name: "Atelier",
+    summary: "White and minimal: one centred line with a drawn thread, five looks in a full-width accordion; editorial grid below.",
+    Component: HeroAtelier,
+  },
 } as const;
 
 export type HeroId = keyof typeof HERO_VARIANTS;
 
 /** The hero shown on the live home page. */
-export const ACTIVE_HERO: HeroId = "06";
+export const ACTIVE_HERO: HeroId = "07";
 
 export const heroIds = Object.keys(HERO_VARIANTS) as HeroId[];
 

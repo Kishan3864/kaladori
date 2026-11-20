@@ -46,6 +46,36 @@ export async function saveUpload(file: File): Promise<SavedUpload> {
   return { ok: true, url: `/media/${name}` };
 }
 
+/** Widths a resized upload may have; requests snap up to the next one (bounded disk cache). */
+const WIDTHS = [96, 256, 384, 640, 828, 1080, 1600, 2048];
+const CACHE_DIR = path.join(/*turbopackIgnore: true*/ UPLOAD_DIR, ".cache");
+
+/**
+ * An upload resized to (at least) `width`, as WebP, cached on disk after the
+ * first request. Returns null when the upload does not exist or cannot be read.
+ */
+export async function resizedUpload(name: string, width: number) {
+  if (!MEDIA_NAME.test(name)) return null;
+  const w = WIDTHS.find((x) => x >= width) ?? WIDTHS[WIDTHS.length - 1];
+  const cached = path.join(/*turbopackIgnore: true*/ CACHE_DIR, `${w}-${name}.webp`);
+  try {
+    return await fs.readFile(cached);
+  } catch {
+    // not cached yet
+  }
+  const original = await readUpload(name);
+  if (!original) return null;
+  try {
+    const { default: sharp } = await import("sharp");
+    const out = await sharp(original).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer();
+    await fs.mkdir(/*turbopackIgnore: true*/ CACHE_DIR, { recursive: true });
+    await fs.writeFile(cached, out);
+    return out;
+  } catch {
+    return null; // fall back to the original
+  }
+}
+
 export async function readUpload(name: string) {
   if (!MEDIA_NAME.test(name)) return null;
   try {
